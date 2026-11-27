@@ -82,6 +82,9 @@ header.top {
 .brand-badge { width: 36px; height: 36px; border-radius: 12px; display: grid; place-items: center; font-size: 20px; background: linear-gradient(145deg, var(--red), var(--red2)); box-shadow: 0 6px 18px rgba(232, 50, 79, .45), inset 0 1px 0 rgba(255, 255, 255, .3); }
 .brand b { font-family: var(--serif); font-style: italic; font-weight: 900; color: var(--gold); }
 .top-actions { display: flex; gap: 8px; align-items: center; }
+.icon-btn[hidden] { display: none; }
+.icon-btn.pulse { animation: musicPulse 1.6s ease-in-out infinite; border-color: rgba(255, 215, 122, .7); }
+@keyframes musicPulse { 50% { box-shadow: 0 0 0 6px rgba(255, 215, 122, .18), 0 0 24px rgba(255, 215, 122, .45); transform: scale(1.06); } }
 .icon-btn { width: 44px; height: 44px; border-radius: 14px; border: 1px solid var(--line); background: var(--glass); display: grid; place-items: center; font-size: 19px; transition: background .2s, transform .2s; }
 @media (hover: hover) { .icon-btn:hover { background: var(--glass-2); transform: translateY(-1px); } }
 main#app { flex: 1; width: 100%; max-width: 1000px; margin: 0 auto; padding: 8px max(16px, env(safe-area-inset-right)) calc(140px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
@@ -373,6 +376,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       <span>Secret Santa <b>ISD</b></span>
     </button>
     <div class="top-actions">
+      <button class="icon-btn" id="musicBtn" data-action="music" aria-label="Avvia o metti in pausa la musica" hidden></button>
       <button class="icon-btn" id="soundBtn" data-action="sound" aria-label="Attiva o disattiva i suoni"></button>
     </div>
   </header>
@@ -398,7 +402,8 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     titolo: 'Pranzo di Natale ISD',
     dataEvento: '2026-12-11T13:00:00+01:00',
     budget: '',
-    passwordHash: ''
+    passwordHash: '',
+    musica: ''
   });
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const COLORS = ['#ff6075', '#ffd77a', '#4be3ad', '#78b5ff', '#d68cff', '#e6f3ff'];
@@ -549,6 +554,9 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     if (typeof raw.titolo === 'string' && raw.titolo.trim()) c.titolo = raw.titolo.trim().slice(0, 60);
     if (validDate(raw.dataEvento)) c.dataEvento = raw.dataEvento;
     c.budget = typeof raw.budget === 'string' ? raw.budget.trim().slice(0, 40) : '';
+    // Solo un file del sito (es. "musica.mp3" o "audio/brano.mp3") o un indirizzo https.
+    const m = typeof raw.musica === 'string' ? raw.musica.trim() : '';
+    c.musica = /^(https:\/\/[^\s"'<>]+|(?!.*\.\.)[^\s:"'<>\\/][^:"'<>\\]*\.(mp3|m4a|aac|ogg|oga|opus|wav))$/i.test(m) ? m : '';
     c.passwordHash = isHash(String(raw.passwordHash || '').toLowerCase()) ? raw.passwordHash.toLowerCase() : '';
     return c;
   }
@@ -583,7 +591,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
   }
 
   // ============ Audio (WebAudio sintetizzato, nessun file) ============
-  const prefs = Object.assign({ sound: true }, store.load(PREFS_KEY, {}));
+  const prefs = Object.assign({ sound: true, music: true }, store.load(PREFS_KEY, {}));
   const sfx = (() => {
     let ctx = null, master = null, reverb = null, noiseBuf = null;
     function init() {
@@ -717,6 +725,65 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       }),
       mute() { try { if (ctx && ctx.state === 'running') ctx.suspend(); } catch { /* ignore */ } }
     };
+  })();
+
+  // ============ Musica di sottofondo (solo pagina pubblica) ============
+  const music = (() => {
+    const VOLUME = .55;
+    let el = null, src = '', fadeT = 0, hinted = false;
+    let state = 'idle'; // 'idle' | 'playing' | 'paused' | 'blocked' | 'error'
+    function ensure() {
+      if (!config.musica) return null;
+      if (el && src === config.musica) return el;
+      if (el) el.pause();
+      src = config.musica;
+      el = new Audio();
+      el.loop = true; el.preload = 'auto'; el.volume = 0;
+      el.addEventListener('error', () => { state = 'error'; renderMusicBtn(); });
+      el.src = /^https:/i.test(src) ? src : encodeURI(src);
+      return el;
+    }
+    function fade(to, ms, done) {
+      clearInterval(fadeT);
+      const from = el.volume, steps = Math.max(1, Math.round(ms / 50));
+      let i = 0;
+      fadeT = setInterval(() => {
+        i++;
+        el.volume = Math.min(1, Math.max(0, from + (to - from) * (i / steps)));
+        if (i >= steps) { clearInterval(fadeT); if (done) done(); }
+      }, 50);
+    }
+    const wanted = () => prefs.music && view === 'home' && !document.hidden && !!config.musica;
+    async function play() {
+      const a = ensure();
+      if (!a || state === 'error') return;
+      state = 'playing'; // evita doppie partenze mentre play() è in corso
+      renderMusicBtn();
+      try {
+        await a.play();
+        if (!wanted()) { a.pause(); state = 'paused'; renderMusicBtn(); return; }
+        fade(VOLUME, 1800);
+      } catch (e) {
+        if (state === 'error') return;
+        state = e && e.name === 'NotAllowedError' ? 'blocked' : 'error';
+        renderMusicBtn();
+        if (state === 'blocked' && !hinted) { hinted = true; toast('🎵 Tocca lo schermo per la musica'); }
+      }
+    }
+    function pause() {
+      if (!el || state !== 'playing') { if (state === 'blocked') state = 'paused'; renderMusicBtn(); return; }
+      state = 'paused';
+      fade(0, 600, () => { if (state !== 'playing') el.pause(); });
+      renderMusicBtn();
+    }
+    /** Allinea la riproduzione allo stato voluto (pagina, preferenza, scheda visibile). */
+    function sync() {
+      if (wanted()) { if (state !== 'playing' && state !== 'error' && state !== 'blocked') play(); }
+      else if (state === 'playing' || state === 'blocked') pause();
+    }
+    /** Primo gesto dell'utente: sblocca la riproduzione se il browser l'aveva bloccata. */
+    function unlock() { if (state === 'blocked' && wanted()) { state = 'idle'; play(); } }
+    return { sync, unlock, get state() { return state; } };
   })();
 
   // ============ Sky (stelle + neve) ============
@@ -1262,12 +1329,24 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     app.innerHTML = view !== 'admin' ? viewHome() : !org.authed ? viewLogin() : org.draw ? viewReveal() : viewParticipants();
     $('.brand').disabled = view !== 'admin';
     renderSoundBtn();
+    renderMusicBtn();
     updateCountdown();
     if (view === 'admin' && !org.authed) $('#pwInput')?.focus({ preventScroll: true });
   }
 
+  function renderMusicBtn() {
+    const b = $('#musicBtn');
+    const on = prefs.music && music.state !== 'paused';
+    b.hidden = view !== 'home' || !config.musica || music.state === 'error';
+    b.textContent = on ? '🎵' : '🔇';
+    b.setAttribute('aria-pressed', String(on));
+    b.title = music.state === 'blocked' ? 'Tocca per avviare la musica' : on ? 'Metti in pausa la musica' : 'Riattiva la musica';
+    b.classList.toggle('pulse', music.state === 'blocked' && prefs.music);
+  }
+
   function renderSoundBtn() {
     const b = $('#soundBtn');
+    b.hidden = view !== 'admin';
     b.textContent = prefs.sound ? '🔔' : '🔕';
     b.setAttribute('aria-pressed', String(prefs.sound));
     b.title = prefs.sound ? 'Suoni attivi' : 'Suoni disattivati';
@@ -1292,10 +1371,16 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-action]');
     if (!b || b.disabled || b.closest('.overlay')) return;
-    const own = ['sound', 'draw', 'reveal'];
+    const own = ['sound', 'draw', 'reveal', 'music'];
     if (!own.includes(b.dataset.action)) sfx.tap();
     switch (b.dataset.action) {
       case 'home': location.hash = ''; break;
+      case 'music':
+        prefs.music = music.state === 'blocked' ? true : !(prefs.music && music.state !== 'paused');
+        store.save(PREFS_KEY, prefs);
+        if (prefs.music) { if (music.state === 'blocked') music.unlock(); else music.sync(); } else music.sync();
+        renderMusicBtn();
+        break;
       case 'sound': prefs.sound = !prefs.sound; store.save(PREFS_KEY, prefs); renderSoundBtn(); if (prefs.sound) sfx.toggleOn(); else sfx.mute(); break;
       case 'reload-csv': loadCSV(); break;
       case 'draw': sfx.tap(); doDraw(); break;
@@ -1351,8 +1436,16 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     org.loginError = false;
     render();
     if (view === 'admin' && org.authed && org.csv.status === 'idle') loadCSV();
+    music.sync();
     scrollTo({ top: 0 });
   });
+
+  // Il browser consente l'audio solo dopo un gesto: al primo tocco/tasto la musica parte se era bloccata.
+  ['pointerdown', 'pointerup', 'touchend', 'click', 'keydown'].forEach((t) => document.addEventListener(t, (e) => {
+    if (e.target.closest && e.target.closest('#musicBtn')) return; // gestito dal pulsante stesso
+    music.unlock();
+  }, { capture: true, passive: true }));
+  document.addEventListener('visibilitychange', () => music.sync());
 
   // ============ Boot ============
   readHash();
@@ -1362,11 +1455,12 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     checkSession();
     render();
     if (view === 'admin' && org.authed) loadCSV();
+    music.sync();
   });
   setInterval(updateCountdown, 1000);
 
   // Esposto solo per i test automatici
-  window.__ss = { computeDraw, blockedGivers, isValidAssignment, participantsFromCSV, exclusionsFromGroups, sanitizeConfig, hashPassword, sfx };
+  window.__ss = { computeDraw, blockedGivers, isValidAssignment, participantsFromCSV, exclusionsFromGroups, sanitizeConfig, hashPassword, sfx, music };
 })();
 </script>
 </body>
