@@ -487,7 +487,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     const set = new Set(ids), recv = new Set();
     for (const g of keys) {
       const r = map[g];
-      if (!set.has(g) || !set.has(r) || g === r || recv.has(r)) return false;
+      if (typeof r !== 'string' || !set.has(g) || !set.has(r) || g === r || recv.has(r)) return false;
       recv.add(r);
     }
     return true;
@@ -508,7 +508,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
   function solve(ids, ok, noMutual, rng) {
     const options = (g) => ids.filter((r) => ok(g, r)).length;
     const givers = shuffle(ids, rng).sort((a, b) => options(a) - options(b));
-    const used = new Set(), out = {};
+    const used = new Set(), out = new Map();
     let steps = 0;
     const LIMIT = 40000;
     function bt(i) {
@@ -517,14 +517,14 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       const g = givers[i];
       for (const r of shuffle(ids, rng)) {
         if (used.has(r) || !ok(g, r)) continue;
-        if (noMutual && out[r] === g) continue;
-        used.add(r); out[g] = r;
+        if (noMutual && out.get(r) === g) continue;
+        used.add(r); out.set(g, r);
         if (bt(i + 1)) return true;
-        used.delete(r); delete out[g];
+        used.delete(r); out.delete(g);
       }
       return false;
     }
-    return bt(0) ? { ...out } : null;
+    return bt(0) ? Object.assign(Object.create(null), Object.fromEntries(out)) : null;
   }
 
   function computeDraw(ids, exclusions, rng = Math.random) {
@@ -832,7 +832,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
   // ============ Overlays ============
   const overlayRoot = $('#overlay-root');
   let overlayClose = null;
-  function openOverlay(html, onEscape) {
+  function openOverlay(html, onEscape, onRemoved) {
     closeOverlayNow();
     const prevFocus = document.activeElement;
     const el = document.createElement('div');
@@ -850,6 +850,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       document.body.classList.remove('locked');
       overlayClose = null;
       if (prevFocus && document.contains(prevFocus)) prevFocus.focus({ preventScroll: true });
+      if (onRemoved) onRemoved();
     };
     return el;
   }
@@ -864,8 +865,8 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
 
   function confirmDialog({ title, text, ok = 'Conferma', cancel = 'Annulla', emoji = '🎄', danger = false }) {
     return new Promise((resolve) => {
-      let done = false;
-      const finish = async (v) => { if (done) return; done = true; await closeOverlay(); resolve(v); };
+      let done = false, result = false;
+      const finish = async (v) => { if (done) return; done = true; result = v; await closeOverlay(); };
       const el = openOverlay(`
         <div class="card dialog">
           <div class="emoji" aria-hidden="true">${emoji}</div>
@@ -875,7 +876,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
             ${cancel ? `<button class="btn" data-v="0">${esc(cancel)}</button>` : ''}
             <button class="btn ${danger ? 'red' : 'primary'}" data-v="1">${esc(ok)}</button>
           </div>
-        </div>`, () => { sfx.close(); finish(false); });
+        </div>`, () => { sfx.close(); finish(false); }, () => resolve(result));
       sfx.open();
       el.addEventListener('click', (e) => {
         const b = e.target.closest('[data-v]');
@@ -911,6 +912,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
    * Rivelazione: conferma "Sei davvero X?" (opzionale) → pacco → scossa → coperchio vola via → raggi + coriandoli → nome.
    */
   function openGift({ person, santa, confirm, onOpened, onClose }) {
+    let opened = false, closed = false;
     const pills = [
       config.budget ? `<span>💶 Budget: ${esc(config.budget)}</span>` : '',
       `<span>📅 ${esc(fmtDate(config.dataEvento, false))}</span>`
@@ -945,10 +947,9 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
             <button class="btn primary big" data-a="done">Fatto, nascondi 🎄</button>
           </div>
         </div>
-      </div>`, () => { sfx.close(); finish(); });
+      </div>`, () => { sfx.close(); finish(); }, () => { closed = true; });
     if (!confirm) sfx.open();
 
-    let opened = false, closed = false;
     const stage = el.querySelector('.stage');
     const gift = el.querySelector('.gift');
     async function finish() {
@@ -956,6 +957,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       await closeOverlay();
       if (onClose) onClose(opened);
     }
+    const gone = () => closed || !el.isConnected;
     function showGift() {
       el.querySelector('.step-confirm').hidden = true;
       el.querySelector('.step-gift').hidden = false;
@@ -969,20 +971,20 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       gift.classList.add('shake');
       sfx.rattle();
       await wait(750);
-      if (closed) return;
+      if (gone()) return;
       gift.classList.remove('shake');
       gift.classList.add('open');
       stage.classList.add('opened');
       sfx.pop();
-      setTimeout(() => { if (!closed) sfx.shimmer(); }, 200);
+      setTimeout(() => { if (!gone()) sfx.shimmer(); }, 200);
       const r = gift.getBoundingClientRect();
       fx.burst(r.left + r.width / 2, r.top + r.height / 2, 200);
       if (onOpened) onOpened();
       await wait(350);
-      if (closed) return;
+      if (gone()) return;
       stage.classList.add('revealed');
       await scramble(el.querySelector('.prize .name'), santa, 1100);
-      if (closed) return;
+      if (gone()) return;
       sfx.reveal();
       fx.rain(90);
       el.querySelector('.after').classList.add('show');
@@ -1041,13 +1043,18 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     if (!d || typeof d !== 'object' || !d.assignments) return null;
     const names = Object.keys(d.assignments);
     if (names.length < 2 || !isValidAssignment(d.assignments, names)) return null;
-    const revealed = {};
-    if (d.revealed && typeof d.revealed === 'object') names.forEach((n) => { if (d.revealed[n] === true) revealed[n] = true; });
-    return { assignments: d.assignments, revealed, roster: typeof d.roster === 'string' ? d.roster : '', drawnAt: Number(d.drawnAt) || 0 };
+    // Oggetti senza prototipo: un nome come "__proto__" o "constructor" resta un dato qualsiasi.
+    const assignments = Object.create(null), revealed = Object.create(null);
+    names.forEach((n) => { assignments[n] = d.assignments[n]; });
+    if (d.revealed && typeof d.revealed === 'object') names.forEach((n) => { if (Object.hasOwn(d.revealed, n) && d.revealed[n] === true) revealed[n] = true; });
+    return { assignments, revealed, roster: typeof d.roster === 'string' ? d.roster : '', drawnAt: Number(d.drawnAt) || 0 };
   }
   org.draw = sanitizeDraw(store.load(DRAW_KEY, null));
   const saveDraw = () => (org.draw ? store.save(DRAW_KEY, org.draw) : store.del(DRAW_KEY));
   const rosterSig = (names) => names.map(nameKey).sort().join('\n');
+  /** Nomi dell'estrazione in ordine alfabetico: è l'ordine della griglia e degli indici data-i. */
+  const drawNames = (d) => Object.keys(d.assignments).sort((a, b) => a.localeCompare(b, 'it', { sensitivity: 'base' }));
+  const isSeen = (d, n) => Object.hasOwn(d.revealed, n) && d.revealed[n] === true;
 
   function checkSession() {
     org.authed = !!config.passwordHash && store.load(AUTH_KEY, '', 'sessionStorage') === config.passwordHash;
@@ -1092,16 +1099,18 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
 
   async function doDraw() {
     if (org.busy) return;
-    const people = org.csv.people;
-    if (people.length < MIN_PEOPLE) { toast(`Servono almeno ${MIN_PEOPLE} partecipanti`, true); return; }
     if (org.draw) {
       const ok = await confirmDialog({
         emoji: '🔁', title: 'Rifare l\'estrazione?',
         text: 'Gli abbinamenti attuali verranno sostituiti e chi ha già scoperto dovrà scoprire di nuovo.',
         ok: 'Sì, rifai', danger: true
       });
-      if (!ok) return;
+      if (!ok || org.busy) return;
+      await loadCSV(); // usa sempre l'elenco aggiornato
     }
+    if (org.csv.status !== 'ok') { toast('Elenco partecipanti non disponibile: ricarica il CSV', true); return; }
+    const people = org.csv.people;
+    if (people.length < MIN_PEOPLE) { toast(`Servono almeno ${MIN_PEOPLE} partecipanti`, true); return; }
     const names = people.map((p) => p.name);
     const exclusions = exclusionsFromGroups(people);
     const blocked = blockedGivers(names, exclusions);
@@ -1111,7 +1120,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     org.busy = true;
     try {
       await playDrawAnimation(shuffle(names));
-      org.draw = { assignments: res, revealed: {}, roster: rosterSig(names), drawnAt: Date.now() };
+      org.draw = { assignments: res, revealed: Object.create(null), roster: rosterSig(names), drawnAt: Date.now() };
       saveDraw();
       fx.rain(220);
       toast('Estrazione completata! 🎉');
@@ -1120,9 +1129,9 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
 
   async function revealFor(name) {
     const d = org.draw;
-    const santa = d?.assignments[name];
-    if (!santa) return;
-    const seen = !!d.revealed[name];
+    if (!d || !Object.hasOwn(d.assignments, name)) return;
+    const santa = d.assignments[name];
+    const seen = isSeen(d, name);
     if (seen) {
       const ok = await confirmDialog({
         emoji: '👀', title: `${name} ha già scoperto`,
@@ -1139,7 +1148,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
 
   async function resetSeen() {
     const ok = await confirmDialog({ emoji: '🔄', title: 'Azzerare i "già scoperto"?', text: 'Tutti torneranno nello stato "da scoprire". Gli abbinamenti non cambiano.', ok: 'Azzera' });
-    if (ok) { sfx.reset(); org.draw.revealed = {}; saveDraw(); render(); }
+    if (ok) { sfx.reset(); org.draw.revealed = Object.create(null); saveDraw(); render(); }
   }
 
   // ============ Views ============
@@ -1222,8 +1231,8 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
 
   function viewReveal() {
     const d = org.draw;
-    const names = Object.keys(d.assignments);
-    const seen = names.filter((n) => d.revealed[n]).length;
+    const names = drawNames(d);
+    const seen = names.filter((n) => isSeen(d, n)).length;
     const pct = Math.round((seen / names.length) * 100);
     const rosterChanged = org.csv.status === 'ok' && d.roster && rosterSig(org.csv.people.map((p) => p.name)) !== d.roster;
     return `<h2 class="section">Chi sta scoprendo?</h2>
@@ -1232,7 +1241,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       <div class="progress"><div class="bar"><i style="width:${pct}%"></i></div><b>${seen}/${names.length}</b></div>
       <div class="orn-grid">
         ${names.map((n, i) => {
-          const s = !!d.revealed[n];
+          const s = isSeen(d, n);
           return `<button class="orn c${(i % 6) + 1} ${s ? 'seen' : ''}" style="--i:${i}" data-action="reveal" data-i="${i}" aria-label="${esc(n)}${s ? ', già scoperto' : ''}">
             <span class="bauble" aria-hidden="true"></span>
             <span class="orn-name">${esc(n)}</span>
@@ -1290,7 +1299,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       case 'sound': prefs.sound = !prefs.sound; store.save(PREFS_KEY, prefs); renderSoundBtn(); if (prefs.sound) sfx.toggleOn(); else sfx.mute(); break;
       case 'reload-csv': loadCSV(); break;
       case 'draw': sfx.tap(); doDraw(); break;
-      case 'reveal': sfx.select(); if (org.draw) revealFor(Object.keys(org.draw.assignments)[Number(b.dataset.i)]); break;
+      case 'reveal': sfx.select(); if (org.draw) revealFor(drawNames(org.draw)[Number(b.dataset.i)]); break;
       case 'reset-seen': resetSeen(); break;
       case 'logout': logout(); break;
       case 'copy-hash': copyText(`"passwordHash": "${org.setupHash}"`).then((ok) => toast(ok ? 'Copiato 📋' : 'Copia non riuscita', !ok)); break;
