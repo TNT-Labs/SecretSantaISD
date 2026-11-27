@@ -3,7 +3,7 @@
 Web app statica per il Secret Santa del **pranzo di Natale ISD (11 dicembre)**, pubblicata con GitHub Pages.
 
 - **Pagina principale** (`https://tnt-labs.github.io/SecretSantaISD/`): solo countdown. I partecipanti la vedono ma non possono fare nulla.
-- **Area organizzatore** (`…/SecretSantaISD/#organizza`): protetta da password. Solo l'organizzatore fa l'estrazione, dal vivo al pranzo; poi ognuno tocca il proprio nome sullo schermo e scopre in privato a chi farà il regalo.
+- **Area organizzatore** (`…/SecretSantaISD/#organizza`): protetta da password. Solo l'organizzatore fa l'estrazione, dal vivo al pranzo; poi ognuno tocca il proprio nome sullo schermo e scopre in privato da chi riceverà il regalo.
 
 ## `partecipanti.csv`
 ```csv
