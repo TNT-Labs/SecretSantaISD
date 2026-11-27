@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#070b1f">
-<meta name="description" content="Estrazione del Secret Santa ISD per il pranzo di Natale dell'11 dicembre.">
+<meta name="description" content="Secret Santa ISD — pranzo di Natale dell'11 dicembre.">
 <title>Secret Santa ISD</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%81%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -122,16 +122,6 @@ h2.section { font-family: var(--serif); font-style: italic; font-size: clamp(1.9
 .btn.big { min-height: 60px; padding: 16px 32px; font-size: 1.15rem; }
 .btn.small { min-height: 44px; padding: 8px 16px; font-size: .95rem; }
 .btn.danger { color: #ffb3c0; border-color: rgba(255, 120, 140, .35); }
-.input {
-  width: 100%; min-width: 0; min-height: 48px; padding: 12px 16px; border-radius: 14px;
-  border: 1px solid var(--line); background: rgba(5, 8, 25, .55); outline: none;
-  transition: border-color .2s, box-shadow .2s;
-}
-.input:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255, 215, 122, .18); }
-.input::placeholder { color: #7f88b0; }
-select.input { appearance: none; -webkit-appearance: none; padding-right: 40px; background-image: linear-gradient(45deg, transparent 50%, var(--gold) 50%), linear-gradient(135deg, var(--gold) 50%, transparent 50%); background-position: calc(100% - 22px) 52%, calc(100% - 16px) 52%; background-size: 6px 6px; background-repeat: no-repeat; }
-select.input option { background: #101a4a; color: var(--fg); }
-label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); min-width: 0; }
 
 /* ---------- Cards ---------- */
 .card {
@@ -146,21 +136,6 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
 @media (min-width: 820px) { .grid-2 { grid-template-columns: 1.25fr 1fr; align-items: start; } }
 .stack { display: grid; gap: 16px; min-width: 0; }
 .row { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
-.row > .input { flex: 1 1 180px; }
-.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media (max-width: 480px) { .row-2 { grid-template-columns: 1fr; } }
-
-/* Tabs */
-.tabs { display: flex; gap: 6px; padding: 6px; margin: 6px 0 18px; border-radius: 999px; background: rgba(5, 8, 25, .55); border: 1px solid var(--line); width: fit-content; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
-.tabs::-webkit-scrollbar { display: none; }
-.tabs button { flex: 0 0 auto; min-height: 44px; padding: 8px 16px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-weight: 600; white-space: nowrap; transition: background .25s, color .25s; }
-.tabs button.on { background: linear-gradient(135deg, #fff0b8, var(--gold) 40%, var(--gold2)); color: #2a1600; box-shadow: 0 6px 18px rgba(232, 169, 58, .35); }
-.tabs button:disabled { opacity: .4; }
-@media (max-width: 560px) {
-  .tabs { width: 100%; }
-  .tabs button { flex: 1 1 0; padding: 8px 6px; font-size: .92rem; }
-  .tabs .xl { display: none; }
-}
 
 /* Chips */
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
@@ -171,17 +146,9 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
 }
 .chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .chip .dot { width: 10px; height: 10px; border-radius: 50%; flex: 0 0 auto; margin-left: -4px; box-shadow: 0 0 10px currentColor; }
-.chip button { width: 36px; height: 36px; flex: 0 0 auto; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .08); font-size: 14px; transition: background .2s; }
-@media (hover: hover) { .chip button:hover { background: rgba(232, 50, 79, .5); } }
 @keyframes pop { from { transform: scale(.6); opacity: 0; } }
 .empty { padding: 22px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 14px; margin-top: 14px; }
-.pairs { display: grid; gap: 8px; margin-top: 12px; }
-.pair { display: flex; align-items: center; gap: 10px; padding: 6px 6px 6px 14px; border-radius: 14px; background: rgba(255, 255, 255, .06); border: 1px solid var(--line); min-width: 0; }
-.pair span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pair button { width: 40px; height: 40px; border-radius: 12px; border: 0; background: rgba(255, 255, 255, .08); flex: 0 0 auto; }
 .banner { display: flex; gap: 12px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; margin-bottom: 16px; background: rgba(255, 215, 122, .1); border: 1px solid rgba(255, 215, 122, .35); color: #ffe7b0; }
-.draw-bar { position: sticky; bottom: calc(14px + env(safe-area-inset-bottom)); z-index: 5; margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.draw-bar .note { font-size: .88rem; color: var(--muted); text-align: center; background: rgba(5, 8, 25, .7); padding: 4px 12px; border-radius: 999px; }
 
 /* ---------- Home hero ---------- */
 .hero { text-align: center; padding: 18px 0 10px; display: flex; flex-direction: column; align-items: center; }
@@ -194,8 +161,6 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
 .cd-wrap.done .countdown { display: none; }
 .cd-wrap.done .cd-done { display: block; }
 .cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-.meta-line { margin-top: 18px; color: var(--muted); font-size: .95rem; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
-.meta-line span { padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .06); border: 1px solid var(--line); }
 
 /* ---------- Gift box ---------- */
 .gift { --g: 200px; position: relative; width: var(--g); height: var(--g); padding: 0; border: 0; background: none; display: block; }
@@ -244,40 +209,8 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
 @keyframes bodyAway { to { transform: translateY(30%) scale(.7); opacity: 0; } }
 .gift.open .gift-glow { animation: none; opacity: 0; transition: opacity .4s; }
 
-/* ---------- Ornament grid (reveal) ---------- */
-.progress { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; }
-.progress .bar { flex: 1; height: 10px; border-radius: 999px; background: rgba(255, 255, 255, .08); overflow: hidden; border: 1px solid var(--line); }
-.progress .bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--green), var(--gold)); box-shadow: 0 0 16px rgba(47, 213, 154, .6); transition: width .6s cubic-bezier(.2, .8, .2, 1); }
-.progress b { font-variant-numeric: tabular-nums; white-space: nowrap; }
-.orn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
-@media (max-width: 420px) { .orn-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
-.orn {
-  --c1: #ff6075; --c2: #b0142f;
-  position: relative; min-width: 0; padding: 46px 12px 16px; border-radius: 20px; border: 1px solid var(--line);
-  background: linear-gradient(170deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .025));
-  display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
-  transition: transform .3s cubic-bezier(.2, 1.4, .4, 1), box-shadow .3s, border-color .3s;
-  animation: rise .5s cubic-bezier(.2, .9, .3, 1) both; animation-delay: calc(var(--i, 0) * 40ms);
-  margin-top: 22px;
-}
 @keyframes rise { from { opacity: 0; transform: translateY(18px) scale(.95); } }
-@media (hover: hover) { .orn:hover { transform: translateY(-6px) rotate(-1deg); border-color: rgba(255, 215, 122, .55); box-shadow: 0 18px 40px rgba(0, 0, 0, .4), 0 0 0 1px rgba(255, 215, 122, .2), 0 0 40px rgba(255, 215, 122, .15); } }
-.orn .bauble {
-  position: absolute; top: -26px; left: 50%; width: 58px; height: 58px; margin-left: -29px; border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .95) 0 6%, transparent 18%), radial-gradient(circle at 40% 35%, var(--c1), var(--c2) 75%);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, .45), 0 0 26px color-mix(in srgb, var(--c1) 45%, transparent);
-  transform-origin: 50% -14px; animation: swing 3.6s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -370ms);
-}
-.orn .bauble::before { content: ''; position: absolute; top: -9px; left: 50%; width: 16px; height: 10px; margin-left: -8px; border-radius: 3px; background: linear-gradient(90deg, #a77a26, #ffe39a, #a77a26); }
-.orn .bauble::after { content: ''; position: absolute; left: 12%; right: 12%; top: 46%; height: 9%; border-radius: 4px; background: rgba(255, 255, 255, .28); }
 @keyframes swing { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
-.orn-name { font-weight: 700; font-size: 1.08rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.orn-state { font-size: .8rem; color: var(--muted); }
-.orn.seen { opacity: .62; }
-.orn.seen .bauble { filter: saturate(.35) brightness(.9); animation-play-state: paused; }
-.orn.seen .orn-state { color: var(--green); font-weight: 600; }
-.c1 { --c1: #ff6075; --c2: #a3122d; } .c2 { --c1: #ffd77a; --c2: #b97a14; } .c3 { --c1: #4be3ad; --c2: #0d7a54; }
-.c4 { --c1: #78b5ff; --c2: #1d4fb0; } .c5 { --c1: #d68cff; --c2: #6a2aa8; } .c6 { --c1: #e6f3ff; --c2: #7f9bbd; }
 .actions-foot { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 26px; }
 
 /* ---------- Links ---------- */
@@ -288,6 +221,35 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
 .link-row .who .dot { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 auto; }
 .link-row .acts { display: flex; gap: 8px; flex: 0 0 auto; }
 @media (max-width: 480px) { .link-row .btn.small .lbl { display: none; } .link-row .btn.small { width: 44px; padding: 0; } }
+
+/* ---------- Note / status ---------- */
+.note-card { margin: 4px 0 0; max-width: 520px; padding: 14px 18px; border-radius: 16px; background: rgba(255, 255, 255, .06); border: 1px solid var(--line); color: var(--muted); }
+.note-card strong { color: var(--fg); }
+.status-line { margin: 6px 0 0; font-weight: 600; color: var(--gold); min-height: 1.5em; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font-size: .9rem; font-weight: 600; border: 1px solid var(--line); background: rgba(255, 255, 255, .06); }
+.pill.ok { color: #9ff3cf; border-color: rgba(47, 213, 154, .5); background: rgba(47, 213, 154, .12); }
+.pill.warn { color: #ffe3a1; border-color: rgba(255, 215, 122, .5); background: rgba(255, 215, 122, .1); }
+.pill.bad { color: #ffc0ca; border-color: rgba(255, 110, 130, .5); background: rgba(232, 50, 79, .12); }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
+.errs { margin: 12px 0 0; padding-left: 20px; color: #ffc0ca; font-size: .92rem; }
+pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: rgba(0, 0, 0, .4); border: 1px solid var(--line); font: .85rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre-wrap; word-break: break-all; color: #dfe6ff; }
+.key { font: 700 1.05rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .04em; color: var(--gold); word-break: break-all; }
+.file-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.admin-draw { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.admin-draw .note { font-size: .88rem; color: var(--muted); }
+.chip .grp { font-size: .72rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: rgba(255, 255, 255, .12); color: var(--muted); }
+.chip { padding: 6px 14px; }
+
+/* ---------- Locked gift ---------- */
+.gift .lock {
+  position: absolute; left: 50%; top: 66%; z-index: 3; width: calc(var(--g) * .28); aspect-ratio: 1; border-radius: 50%;
+  transform: translate(-50%, -50%); display: grid; place-items: center; font-size: calc(var(--g) * .14);
+  background: radial-gradient(circle at 35% 30%, #3d4680, #141a3c); border: 2px solid rgba(255, 215, 122, .75);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .5), 0 0 22px rgba(255, 215, 122, .35);
+}
+.gift.locked { filter: saturate(.85); }
+.gift.nope { animation: nope .5s ease both; }
+@keyframes nope { 20%, 60% { transform: translateX(-7px) rotate(-3deg); } 40%, 80% { transform: translateX(7px) rotate(3deg); } }
 
 /* ---------- Overlays ---------- */
 .overlay {
@@ -407,59 +369,95 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
 'use strict';
 (() => {
   // ============ Config & utilities ============
-  const STORE_KEY = 'ssisd.v1';
-  const DEFAULT_DATE = '2026-12-11T13:00';
-  const MAX_NAME = 30;
+  const CONFIG_URL = 'config.json';
+  const CSV_URL = 'partecipanti.csv';
+  const ADMIN_KEY = 'ssisd.admin.v2';
+  const PREFS_KEY = 'ssisd.prefs';
+  const MAX_NAME = 40;
   const MIN_PEOPLE = 3;
+  const POLL_MS = 30000;
+  const DEFAULT_CONFIG = Object.freeze({
+    titolo: 'Pranzo di Natale ISD',
+    dataEvento: '2026-12-11T13:00:00+01:00',
+    sblocco: '2026-12-11T13:00:00+01:00',
+    chiave: '',
+    budget: ''
+  });
   const OBF_KEY = new TextEncoder().encode('ISD*SecretSanta*2026');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COLORS = ['#ff6075', '#ffd77a', '#4be3ad', '#78b5ff', '#d68cff', '#e6f3ff'];
 
   const $ = (s, r = document) => r.querySelector(s);
-  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const wait = (ms) => new Promise((r) => setTimeout(r, reduceMotion ? Math.min(ms, 60) : ms));
-  const normalizeName = (s) => String(s).replace(/\s+/g, ' ').trim().slice(0, MAX_NAME);
-  const colorClass = (i) => 'c' + ((i % 6) + 1);
-  const COLORS = ['#ff6075', '#ffd77a', '#4be3ad', '#78b5ff', '#d68cff', '#e6f3ff'];
+  const normalizeName = (s) => String(s ?? '').replace(/\s+/g, ' ').trim().slice(0, MAX_NAME);
+  const nameKey = (s) => normalizeName(s).toLocaleLowerCase('it');
 
   const store = {
     load(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch { return d; } },
-    save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage non disponibile */ } }
+    save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage non disponibile */ } },
+    del(k) { try { localStorage.removeItem(k); } catch { /* ignore */ } }
   };
 
-  // ============ State ============
-  const defaults = () => ({
-    participants: [], exclusions: [], budget: '', eventDate: DEFAULT_DATE,
-    assignments: null, revealed: {}, drawnAt: null, sound: true
-  });
-
-  function sanitizeState(raw) {
-    const s = Object.assign(defaults(), raw && typeof raw === 'object' ? raw : {});
-    s.participants = Array.isArray(s.participants)
-      ? s.participants.filter((p) => p && typeof p.id === 'string' && typeof p.name === 'string' && normalizeName(p.name))
-      : [];
-    const ids = new Set(s.participants.map((p) => p.id));
-    s.exclusions = Array.isArray(s.exclusions)
-      ? s.exclusions.filter((e) => Array.isArray(e) && e.length === 2 && ids.has(e[0]) && ids.has(e[1]) && e[0] !== e[1])
-      : [];
-    if (s.assignments && !isValidAssignment(s.assignments, s.participants.map((p) => p.id))) {
-      s.assignments = null; s.revealed = {}; s.drawnAt = null;
+  // ============ Pure logic: CSV ============
+  function parseCSVRows(text) {
+    text = String(text).replace(/^﻿/, '');
+    const first = text.split(/\r?\n/, 1)[0] || '';
+    const sep = (first.match(/;/g) || []).length > (first.match(/,/g) || []).length ? ';' : ',';
+    const rows = [];
+    let row = [], cell = '', q = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (q) {
+        if (ch === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; }
+        else cell += ch;
+      } else if (ch === '"') q = true;
+      else if (ch === sep) { row.push(cell); cell = ''; }
+      else if (ch === '\n' || ch === '\r') {
+        if (ch === '\r' && text[i + 1] === '\n') i++;
+        row.push(cell); rows.push(row); row = []; cell = '';
+      } else cell += ch;
     }
-    if (!s.revealed || typeof s.revealed !== 'object') s.revealed = {};
-    if (typeof s.budget !== 'string') s.budget = '';
-    if (typeof s.eventDate !== 'string' || isNaN(new Date(s.eventDate))) s.eventDate = DEFAULT_DATE;
-    s.sound = s.sound !== false;
-    return s;
+    if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+    return rows;
   }
 
-  let state = sanitizeState(store.load(STORE_KEY, null));
-  let view = 'home';
-  let linkPayload = null;
-  let focusAfterRender = null;
-  const save = () => store.save(STORE_KEY, state);
-  const byId = (id) => state.participants.find((p) => p.id === id);
+  /** CSV → { people: [{name, group}], errors: [] }. Colonne: nome[, gruppo]. */
+  function participantsFromCSV(text) {
+    const rows = parseCSVRows(text).map((r) => r.map((c) => c.trim()));
+    const errors = [];
+    let nameCol = 0, groupCol = 1, start = 0;
+    const header = (rows[0] || []).map((c) => c.toLowerCase());
+    if (['nome', 'name', 'partecipante', 'nominativo'].includes(header[0]) || header.includes('nome')) {
+      nameCol = Math.max(0, header.findIndex((c) => ['nome', 'name', 'partecipante', 'nominativo'].includes(c)));
+      groupCol = header.findIndex((c) => ['gruppo', 'group', 'coppia'].includes(c));
+      start = 1;
+    }
+    const people = [], seen = new Set();
+    for (let i = start; i < rows.length; i++) {
+      const r = rows[i];
+      if (!r.length || r.every((c) => !c) || (r[0] || '').startsWith('#')) continue;
+      const raw = r[nameCol] || '';
+      const name = normalizeName(raw);
+      if (!name) { errors.push(`Riga ${i + 1}: nome mancante`); continue; }
+      if (raw.trim().length > MAX_NAME) errors.push(`Riga ${i + 1}: nome troppo lungo, accorciato a "${name}"`);
+      const k = nameKey(name);
+      if (seen.has(k)) { errors.push(`Riga ${i + 1}: "${name}" è duplicato, ignorato`); continue; }
+      seen.add(k);
+      people.push({ name, group: groupCol >= 0 ? normalizeName(r[groupCol] || '') : '' });
+    }
+    return { people, errors };
+  }
 
-  // ============ Pure logic ============
+  function exclusionsFromGroups(people) {
+    const ex = [];
+    for (let i = 0; i < people.length; i++)
+      for (let j = i + 1; j < people.length; j++)
+        if (people[i].group && nameKey(people[i].group) === nameKey(people[j].group)) ex.push([people[i].name, people[j].name]);
+    return ex;
+  }
+
+  // ============ Pure logic: draw ============
   function shuffle(arr, rng = Math.random) {
     const a = arr.slice();
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
@@ -481,17 +479,16 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
 
   function makeAllowed(exclusions) {
     const banned = new Set();
-    for (const [a, b] of exclusions) { banned.add(a + '|' + b); banned.add(b + '|' + a); }
-    return (g, r) => g !== r && !banned.has(g + '|' + r);
+    for (const [a, b] of exclusions) { banned.add(a + '\u0000' + b); banned.add(b + '\u0000' + a); }
+    return (g, r) => g !== r && !banned.has(g + '\u0000' + r);
   }
 
-  /** Persone che non hanno nessun destinatario possibile (troppe esclusioni). */
   function blockedGivers(ids, exclusions) {
     const ok = makeAllowed(exclusions);
     return ids.filter((g) => !ids.some((r) => ok(g, r)));
   }
 
-  /** Backtracking randomizzato con euristica MRV; ritorna {giverId: receiverId} o null. */
+  /** Backtracking randomizzato con euristica MRV; ritorna {giver: receiver} o null. */
   function solve(ids, ok, noMutual, rng) {
     const options = (g) => ids.filter((r) => ok(g, r)).length;
     const givers = shuffle(ids, rng).sort((a, b) => options(a) - options(b));
@@ -527,41 +524,86 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     return null;
   }
 
+  // ============ Crypto (AES-GCM) & token ============
+  const b64u = (bytes) => { let bin = ''; bytes.forEach((b) => { bin += String.fromCharCode(b); }); return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
+  const fromB64u = (s) => { const b = s.replace(/-/g, '+').replace(/_/g, '/'); return Uint8Array.from(atob(b + '==='.slice((b.length + 3) % 4)), (c) => c.charCodeAt(0)); };
+  const isKeyFormat = (k) => typeof k === 'string' && /^[A-Za-z0-9_-]{22}$/.test(k);
+
+  function newKey() { return b64u(crypto.getRandomValues(new Uint8Array(16))); }
+  function importKey(k) { return crypto.subtle.importKey('raw', fromB64u(k), 'AES-GCM', false, ['encrypt', 'decrypt']); }
+
+  /** Cifra il destinatario; il nome di chi regala è legato al testo cifrato (AAD) e non si può scambiare. */
+  async function seal(key, giver, receiver) {
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv, additionalData: new TextEncoder().encode(nameKey(giver)) }, await importKey(key), new TextEncoder().encode(receiver));
+    return b64u(iv) + '.' + b64u(new Uint8Array(ct));
+  }
+  async function unseal(key, giver, sealed) {
+    try {
+      const [iv, ct] = sealed.split('.');
+      const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromB64u(iv), additionalData: new TextEncoder().encode(nameKey(giver)) }, await importKey(key), fromB64u(ct));
+      return normalizeName(new TextDecoder().decode(pt)) || null;
+    } catch { return null; }
+  }
+
   function encodeToken(obj) {
     const bytes = new TextEncoder().encode(JSON.stringify(obj));
-    let bin = '';
-    bytes.forEach((b, i) => { bin += String.fromCharCode(b ^ OBF_KEY[i % OBF_KEY.length] ^ ((i * 37) & 255)); });
-    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return b64u(bytes.map((b, i) => b ^ OBF_KEY[i % OBF_KEY.length] ^ ((i * 37) & 255)));
   }
   function decodeToken(tok) {
     try {
-      const b64 = tok.replace(/-/g, '+').replace(/_/g, '/');
-      const bin = atob(b64 + '==='.slice((b64.length + 3) % 4));
-      const bytes = Uint8Array.from(bin, (c, i) => c.charCodeAt(0) ^ OBF_KEY[i % OBF_KEY.length] ^ ((i * 37) & 255));
+      const bytes = fromB64u(tok).map((b, i) => b ^ OBF_KEY[i % OBF_KEY.length] ^ ((i * 37) & 255));
       const o = JSON.parse(new TextDecoder().decode(bytes));
-      if (!o || typeof o.g !== 'string' || typeof o.r !== 'string' || !o.g || !o.r) return null;
-      return { g: normalizeName(o.g), r: normalizeName(o.r), b: typeof o.b === 'string' ? o.b.slice(0, 40) : '', d: typeof o.d === 'string' ? o.d : '' };
+      if (!o || o.v !== 2 || typeof o.g !== 'string' || typeof o.s !== 'string' || !normalizeName(o.g) || !o.s.includes('.')) return null;
+      return { g: normalizeName(o.g), s: o.s };
     } catch { return null; }
   }
-  function personalLink(giverId) {
-    const g = byId(giverId), r = byId(state.assignments[giverId]);
-    const tok = encodeToken({ g: g.name, r: r.name, b: state.budget, d: state.eventDate });
-    return location.href.split('#')[0] + '#r=' + tok;
+
+  // ============ Config pubblicata ============
+  const validDate = (s) => typeof s === 'string' && s.trim() !== '' && !isNaN(new Date(s));
+  function sanitizeConfig(raw) {
+    const c = { ...DEFAULT_CONFIG };
+    if (!raw || typeof raw !== 'object') return c;
+    if (typeof raw.titolo === 'string' && raw.titolo.trim()) c.titolo = raw.titolo.trim().slice(0, 60);
+    if (validDate(raw.dataEvento)) c.dataEvento = raw.dataEvento;
+    c.sblocco = validDate(raw.sblocco) ? raw.sblocco : (raw.sblocco === '' ? '' : c.dataEvento);
+    c.chiave = isKeyFormat(raw.chiave) ? raw.chiave : '';
+    c.budget = typeof raw.budget === 'string' ? raw.budget.trim().slice(0, 40) : '';
+    return c;
+  }
+  /** 'unlocked' | 'waiting-time' (chiave presente, orario non ancora raggiunto) | 'waiting-key' */
+  function lockStatus(cfg, now = Date.now()) {
+    const timeOk = !cfg.sblocco || now >= new Date(cfg.sblocco).getTime();
+    if (cfg.chiave && timeOk) return 'unlocked';
+    return timeOk ? 'waiting-key' : 'waiting-time';
+  }
+
+  let config = { ...DEFAULT_CONFIG };
+  let configLoaded = false;
+  async function loadConfig() {
+    try {
+      const r = await fetch(`${CONFIG_URL}?t=${Date.now()}`, { cache: 'no-store' });
+      if (!r.ok) throw new Error(r.status);
+      config = sanitizeConfig(await r.json());
+      configLoaded = true;
+    } catch { /* offline o file locale: si usano i valori correnti */ }
+    return config;
   }
 
   // ============ Date helpers ============
-  function eventDateStr() { return (linkPayload && linkPayload.d) || state.eventDate; }
-  function eventDate() { const d = new Date(eventDateStr()); return isNaN(d) ? new Date(DEFAULT_DATE) : d; }
-  function prettyDate(withTime = false) {
-    const opts = { weekday: 'long', day: 'numeric', month: 'long' };
+  function fmtDate(iso, withTime = true) {
+    const d = new Date(iso);
+    if (isNaN(d)) return '';
+    const opts = { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/Rome' };
     if (withTime) Object.assign(opts, { hour: '2-digit', minute: '2-digit' });
-    try { return new Intl.DateTimeFormat('it-IT', opts).format(eventDate()); } catch { return '11 dicembre'; }
+    try { return new Intl.DateTimeFormat('it-IT', opts).format(d); } catch { return d.toLocaleString(); }
   }
 
   // ============ Audio (WebAudio, nessun file) ============
+  const prefs = Object.assign({ sound: true }, store.load(PREFS_KEY, {}));
   let actx = null;
   function audio() {
-    if (!state.sound) return null;
+    if (!prefs.sound) return null;
     try {
       if (!actx) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; actx = new C(); }
       if (actx.state === 'suspended') actx.resume();
@@ -594,6 +636,10 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     const ctx = audio(); if (!ctx) return;
     bell(ctx, 1600 + Math.random() * 400, ctx.currentTime + .01, .15, .04);
   }
+  function thud() {
+    const ctx = audio(); if (!ctx) return;
+    bell(ctx, 180, ctx.currentTime + .01, .35, .12);
+  }
 
   // ============ Sky (stelle + neve) ============
   function initSky() {
@@ -623,9 +669,9 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     function frame(t) {
       const dt = Math.min(.05, (t - last) / 1000 || 0); last = t;
       ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#fff';
       for (const s of stars) {
         ctx.globalAlpha = .25 + .75 * Math.abs(Math.sin(t * s.sp + s.ph));
-        ctx.fillStyle = '#fff';
         ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 6.283); ctx.fill();
       }
       for (const f of flakes) {
@@ -633,7 +679,6 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
         const x = f.x + Math.sin(t * .001 * f.sw + f.ph) * f.amp;
         if (f.y > h + 10) Object.assign(f, mkFlake(false));
         ctx.globalAlpha = f.a;
-        ctx.fillStyle = '#fff';
         ctx.beginPath(); ctx.arc(x, f.y, f.r, 0, 6.283); ctx.fill();
       }
       ctx.globalAlpha = 1;
@@ -703,13 +748,13 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
   function toast(msg, err = false) {
     const t = $('#toast');
     t.textContent = msg; t.classList.toggle('err', err); t.classList.add('show');
-    clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2800);
+    clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3000);
   }
 
   // ============ Overlays ============
   const overlayRoot = $('#overlay-root');
   let overlayClose = null;
-  function openOverlay(html, onKey) {
+  function openOverlay(html, onEscape) {
     closeOverlayNow();
     const prevFocus = document.activeElement;
     const el = document.createElement('div');
@@ -719,7 +764,7 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     el.innerHTML = html;
     overlayRoot.appendChild(el);
     document.body.classList.add('locked');
-    const keyH = (e) => { if (e.key === 'Escape' && onKey) onKey(e); };
+    const keyH = (e) => { if (e.key === 'Escape' && onEscape) onEscape(e); };
     document.addEventListener('keydown', keyH);
     overlayClose = () => {
       document.removeEventListener('keydown', keyH);
@@ -749,7 +794,7 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
           <h3>${esc(title)}</h3>
           <p>${esc(text)}</p>
           <div class="row">
-            <button class="btn" data-v="0">${esc(cancel)}</button>
+            ${cancel ? `<button class="btn" data-v="0">${esc(cancel)}</button>` : ''}
             <button class="btn ${danger ? 'red' : 'primary'}" data-v="1">${esc(ok)}</button>
           </div>
         </div>`, () => finish(false));
@@ -762,8 +807,8 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     });
   }
 
-  // ============ Gift markup ============
-  const giftInner = () => '<span class="gift-glow"></span><span class="gift-body"></span><span class="gift-lid"><span class="bow"><i></i></span></span>';
+  // ============ Gift ============
+  const giftInner = (locked = false) => '<span class="gift-glow"></span><span class="gift-body"></span><span class="gift-lid"><span class="bow"><i></i></span></span>' + (locked ? '<span class="lock" aria-hidden="true">🔒</span>' : '');
 
   function scramble(el, target, duration = 1200) {
     return new Promise((resolve) => {
@@ -783,60 +828,37 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     });
   }
 
-  /**
-   * Rivelazione spettacolare: pacco → scossa → coperchio vola via → raggi + coriandoli → nome.
-   * confirm: mostra prima la schermata "Sei davvero X?" (modalità schermo condiviso).
-   */
-  function openGift({ giver, receiver, budget, confirm, onOpened, onClose }) {
+  /** Rivelazione: pacco → scossa → coperchio vola via → raggi + coriandoli → nome. */
+  function openGift({ giver, receiver, budget, eventIso }) {
     const pills = [
       budget ? `<span>💶 Budget: ${esc(budget)}</span>` : '',
-      `<span>📅 ${esc(prettyDate())}</span>`
+      eventIso ? `<span>📅 ${esc(fmtDate(eventIso, false))}</span>` : ''
     ].join('');
     const el = openOverlay(`
       <div class="reveal">
-        <div class="card dialog step-confirm" ${confirm ? '' : 'hidden'}>
-          <div class="emoji" aria-hidden="true">🤫</div>
-          <h3>Sei davvero ${esc(giver)}?</h3>
-          <p>Prima di aprire il pacco, assicurati che nessun altro stia guardando lo schermo.</p>
-          <div class="row">
-            <button class="btn" data-a="cancel">Annulla</button>
-            <button class="btn primary" data-a="go">Sì, sono io 👀</button>
+        <p class="eyebrow">Secret Santa ISD</p>
+        <h2 class="hello">Ciao <span class="shine">${esc(giver)}</span>!</h2>
+        <p class="tap">Tocca il pacco per aprirlo ✨</p>
+        <div class="stage">
+          <div class="rays" aria-hidden="true"></div>
+          <button class="gift bob" data-a="open" aria-label="Apri il pacco regalo">${giftInner()}</button>
+          <div class="prize" aria-live="polite">
+            <span class="star" aria-hidden="true">⭐</span>
+            <span class="lbl">Farai il regalo a</span>
+            <span class="name shine"></span>
           </div>
         </div>
-        <div class="step-gift" ${confirm ? 'hidden' : ''}>
-          <p class="eyebrow">Secret Santa ISD</p>
-          <h2 class="hello">Ciao <span class="shine">${esc(giver)}</span>!</h2>
-          <p class="tap">Tocca il pacco per aprirlo ✨</p>
-          <div class="stage">
-            <div class="rays" aria-hidden="true"></div>
-            <button class="gift bob" data-a="open" aria-label="Apri il pacco regalo">${giftInner()}</button>
-            <div class="prize" aria-live="polite">
-              <span class="star" aria-hidden="true">⭐</span>
-              <span class="lbl">Farai il regalo a</span>
-              <span class="name shine"></span>
-            </div>
-          </div>
-          <div class="after">
-            <div class="info-pills">${pills}</div>
-            <p class="secret-note">Shhh… è un segreto! 🤐 Non dirlo a nessuno.</p>
-            <button class="btn primary big" data-a="done">Fatto, nascondi 🎄</button>
-          </div>
+        <div class="after">
+          <div class="info-pills">${pills}</div>
+          <p class="secret-note">Shhh… è un segreto! 🤐 Non dirlo a nessuno.</p>
+          <button class="btn primary big" data-a="done">Fatto, nascondi 🎄</button>
         </div>
       </div>`, () => finish());
 
     let opened = false, closed = false;
     const stage = el.querySelector('.stage');
     const gift = el.querySelector('.gift');
-    async function finish() {
-      if (closed) return; closed = true;
-      await closeOverlay();
-      if (onClose) onClose(opened);
-    }
-    function showGift() {
-      el.querySelector('.step-confirm').hidden = true;
-      el.querySelector('.step-gift').hidden = false;
-      gift.focus();
-    }
+    async function finish() { if (closed) return; closed = true; await closeOverlay(); }
     async function open() {
       if (opened) return; opened = true;
       gift.disabled = true;
@@ -851,7 +873,6 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
       chime();
       const r = gift.getBoundingClientRect();
       fx.burst(r.left + r.width / 2, r.top + r.height / 2, 200);
-      if (onOpened) onOpened();
       await wait(350);
       if (closed) return;
       stage.classList.add('revealed');
@@ -863,11 +884,10 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     }
     el.addEventListener('click', (e) => {
       const a = e.target.closest('[data-a]')?.dataset.a;
-      if (a === 'go') showGift();
-      else if (a === 'cancel' || a === 'done') finish();
+      if (a === 'done') finish();
       else if (a === 'open') open();
     });
-    (confirm ? el.querySelector('[data-a="go"]') : gift).focus();
+    gift.focus();
   }
 
   // ============ Draw animation ============
@@ -888,7 +908,7 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     sparkle();
     const ticker = reduceMotion ? 0 : setInterval(tick, 140);
     await wait(dur * .75);
-    el.querySelector('.draw-caption').textContent = 'Ci siamo…';
+    el.querySelector('.draw-caption').textContent = 'Cifro i pacchi… 🔒';
     await wait(dur * .25);
     clearInterval(ticker);
     const flash = document.createElement('div');
@@ -898,118 +918,95 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     closeOverlayNow();
   }
 
-  // ============ Actions ============
-  async function guardEdit() {
-    if (!state.assignments) return true;
-    const ok = await confirmDialog({
-      emoji: '⚠️', title: 'Estrazione già effettuata',
-      text: 'Modificando partecipanti o esclusioni l\'estrazione attuale verrà annullata e i link personali già inviati non saranno più validi.',
-      ok: 'Modifica comunque', danger: true
-    });
-    if (ok) { state.assignments = null; state.revealed = {}; state.drawnAt = null; save(); }
-    return ok;
+  // ============ Router state ============
+  let view = 'home';          // 'home' | 'personal' | 'admin'
+  let personal = null;        // { g, s } | null (link non valido)
+  let renderedStatus = null;  // stato di blocco mostrato nell'ultima render della pagina personale
+
+  function readHash() {
+    const h = location.hash;
+    if (h === '#organizza') { view = 'admin'; personal = null; return; }
+    const m = h.match(/^#r=([A-Za-z0-9_-]+)$/);
+    if (h.startsWith('#r=')) { view = 'personal'; personal = m ? decodeToken(m[1]) : null; return; }
+    view = 'home'; personal = null;
   }
 
-  function splitNames(text) { return String(text).split(/[\n,;]+/).map(normalizeName).filter(Boolean); }
+  // ============ Admin (organizzatore) ============
+  const admin = {
+    csv: { status: 'idle', people: [], errors: [], source: '' },
+    draw: sanitizeDraw(store.load(ADMIN_KEY, null)),
+    busy: false
+  };
+  function sanitizeDraw(d) {
+    if (!d || !isKeyFormat(d.key) || !Array.isArray(d.links) || !d.links.length) return null;
+    const links = d.links.filter((l) => l && typeof l.g === 'string' && typeof l.t === 'string' && decodeToken(l.t));
+    return links.length === d.links.length ? { key: d.key, drawnAt: Number(d.drawnAt) || 0, links, roster: typeof d.roster === 'string' ? d.roster : '' } : null;
+  }
+  const rosterSig = (names) => names.map(nameKey).sort().join('\n');
 
-  async function addNames(list) {
-    if (!list.length) return;
-    if (!(await guardEdit())) return;
-    const existing = new Set(state.participants.map((p) => p.name.toLocaleLowerCase('it')));
-    const dupes = [];
-    let added = 0;
-    for (const name of list) {
-      const key = name.toLocaleLowerCase('it');
-      if (existing.has(key)) { dupes.push(name); continue; }
-      existing.add(key);
-      state.participants.push({ id: uid(), name });
-      added++;
-    }
-    save();
-    focusAfterRender = '#nameInput';
+  async function loadCSVFromRepo() {
+    admin.csv = { ...admin.csv, status: 'loading' };
     render();
-    if (dupes.length) toast(`Già presente: ${dupes.join(', ')}`, true);
-    else if (added > 1) toast(`Aggiunti ${added} partecipanti 🎉`);
+    try {
+      const r = await fetch(`${CSV_URL}?t=${Date.now()}`, { cache: 'no-store' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      applyCSV(await r.text(), CSV_URL);
+    } catch {
+      admin.csv = { status: 'error', people: [], errors: [`Impossibile leggere ${CSV_URL} dal sito. Se stai lavorando in locale usa "Carica un CSV".`], source: '' };
+    }
+    render();
+  }
+  function applyCSV(text, source) {
+    const { people, errors } = participantsFromCSV(text);
+    admin.csv = { status: 'ok', people, errors, source };
   }
 
-  async function removeParticipant(id) {
-    if (!(await guardEdit())) return;
-    state.participants = state.participants.filter((p) => p.id !== id);
-    state.exclusions = state.exclusions.filter(([a, b]) => a !== id && b !== id);
-    save(); render();
-  }
-
-  async function addExclusion(a, b) {
-    if (!a || !b || a === b) { toast('Scegli due persone diverse', true); return; }
-    if (state.exclusions.some(([x, y]) => (x === a && y === b) || (x === b && y === a))) { toast('Coppia già esclusa', true); return; }
-    if (!(await guardEdit())) return;
-    state.exclusions.push([a, b]);
-    save(); render();
-  }
-
-  async function removeExclusion(i) {
-    if (!(await guardEdit())) return;
-    state.exclusions.splice(i, 1);
-    save(); render();
-  }
-
-  let drawing = false;
   async function doDraw() {
-    if (drawing) return;
-    const ids = state.participants.map((p) => p.id);
-    if (ids.length < MIN_PEOPLE) { toast(`Servono almeno ${MIN_PEOPLE} partecipanti`, true); return; }
-    if (state.assignments) {
+    if (admin.busy) return;
+    const people = admin.csv.people;
+    if (people.length < MIN_PEOPLE) { toast(`Servono almeno ${MIN_PEOPLE} partecipanti`, true); return; }
+    if (admin.draw) {
       const ok = await confirmDialog({
         emoji: '🔁', title: 'Rifare l\'estrazione?',
-        text: 'Gli abbinamenti attuali verranno sostituiti e i link già inviati non saranno più validi.',
+        text: 'Verrà generata una nuova chiave: tutti i link già inviati smetteranno di funzionare e andranno rimandati.',
         ok: 'Sì, rifai', danger: true
       });
       if (!ok) return;
     }
-    const blocked = blockedGivers(ids, state.exclusions);
-    if (blocked.length) { toast(`${blocked.map((id) => byId(id).name).join(', ')}: nessuno da estrarre, troppe esclusioni`, true); return; }
-    const res = computeDraw(ids, state.exclusions);
-    if (!res) { toast('Impossibile estrarre con queste esclusioni. Rimuovine qualcuna.', true); return; }
-    drawing = true;
+    const names = people.map((p) => p.name);
+    const exclusions = exclusionsFromGroups(people);
+    const blocked = blockedGivers(names, exclusions);
+    if (blocked.length) { toast(`${blocked.join(', ')}: nessuno da estrarre, gruppo troppo grande`, true); return; }
+    const res = computeDraw(names, exclusions);
+    if (!res) { toast('Impossibile estrarre con questi gruppi. Riduci le esclusioni.', true); return; }
+    admin.busy = true;
     try {
-      await playDrawAnimation(shuffle(state.participants.map((p) => p.name)));
-      state.assignments = res; state.revealed = {}; state.drawnAt = Date.now();
-      save();
-      view = 'reveal';
-      render();
+      const key = newKey();
+      const sealing = Promise.all(names.map(async (g) => ({ g, t: encodeToken({ v: 2, g, s: await seal(key, g, res[g]) }) })));
+      await playDrawAnimation(shuffle(names));
+      const links = await sealing;
+      admin.draw = { key, drawnAt: Date.now(), links, roster: rosterSig(names) };
+      store.save(ADMIN_KEY, admin.draw);
       chime();
       fx.rain(220);
-      toast('Estrazione completata! 🎉');
-    } finally { drawing = false; }
+      toast('Estrazione completata e cifrata! 🎉');
+    } catch {
+      toast('Errore durante la cifratura: usa un browser aggiornato (HTTPS).', true);
+    } finally { admin.busy = false; render(); }
   }
 
-  async function revealFor(id) {
-    const p = byId(id);
-    const r = byId(state.assignments?.[id]);
-    if (!p || !r) return;
-    if (state.revealed[id]) {
-      const ok = await confirmDialog({
-        emoji: '👀', title: `${p.name} ha già scoperto`,
-        text: 'Vuoi rivederlo? Assicurati che sia proprio questa persona a guardare.', ok: 'Rivedi'
-      });
-      if (!ok) return;
-    }
-    openGift({
-      giver: p.name, receiver: r.name, budget: state.budget, confirm: !state.revealed[id],
-      onOpened: () => { state.revealed[id] = true; save(); },
-      onClose: (opened) => { if (opened) render(); }
-    });
+  async function deleteDraw() {
+    const ok = await confirmDialog({ emoji: '🗑️', title: 'Eliminare l\'estrazione?', text: 'Chiave e link salvati su questo dispositivo verranno cancellati. I link già inviati non potranno più essere aperti.', ok: 'Elimina', danger: true });
+    if (!ok) return;
+    admin.draw = null; store.del(ADMIN_KEY); render(); toast('Estrazione eliminata');
   }
 
-  async function resetSeen() {
-    const ok = await confirmDialog({ emoji: '🔄', title: 'Azzerare i "già visto"?', text: 'Tutti i partecipanti torneranno nello stato "da scoprire". Gli abbinamenti non cambiano.', ok: 'Azzera' });
-    if (ok) { state.revealed = {}; save(); render(); }
-  }
-
-  async function resetAll() {
-    const ok = await confirmDialog({ emoji: '🗑️', title: 'Cancellare tutto?', text: 'Verranno eliminati partecipanti, esclusioni ed estrazione salvati su questo dispositivo.', ok: 'Cancella tutto', danger: true });
-    if (ok) { const sound = state.sound; state = defaults(); state.sound = sound; save(); view = 'home'; render(); toast('Tutto azzerato'); }
-  }
+  const linkBase = () => location.href.split('#')[0];
+  const linkFor = (l) => `${linkBase()}#r=${l.t}`;
+  const unlockConfigText = () => JSON.stringify({
+    titolo: config.titolo, dataEvento: config.dataEvento, sblocco: config.sblocco, chiave: admin.draw?.key || '', budget: config.budget
+  }, null, 2);
+  const shareMessage = (l) => `🎅 Ciao ${l.g}! Ecco il tuo link segreto per il Secret Santa ISD.\nIl pacco si potrà aprire ${config.sblocco ? fmtDate(config.sblocco) : 'quando verrà sbloccato'} 🔒\n${linkFor(l)}`;
 
   async function copyText(text) {
     try { await navigator.clipboard.writeText(text); return true; } catch {
@@ -1021,203 +1018,203 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
       } catch { return false; }
     }
   }
-  const shareMessage = (id) => `🎅 Ciao ${byId(id).name}! Apri il tuo link segreto per scoprire a chi farai il regalo per il Secret Santa ISD (pranzo di Natale, ${prettyDate()}):\n${personalLink(id)}`;
-
-  async function shareLink(id) {
-    const text = shareMessage(id);
+  async function shareLink(l) {
+    const text = shareMessage(l);
     if (navigator.share) {
       try { await navigator.share({ title: 'Secret Santa ISD', text }); return; }
       catch (e) { if (e && e.name === 'AbortError') return; }
     }
     window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
   }
-
-  // ============ Views ============
-  function tabsHtml() {
-    const drawn = !!state.assignments;
-    const t = (v, label) => `<button data-action="go" data-view="${v}" class="${view === v ? 'on' : ''}" ${v !== 'setup' && !drawn ? 'disabled' : ''} ${view === v ? 'aria-current="page"' : ''}>${label}</button>`;
-    return `<nav class="tabs" aria-label="Sezioni">${t('setup', '👥 Partecipanti')}${t('reveal', '🎁 Scoperta')}${t('links', '🔗 Link<span class="xl"> personali</span>')}</nav>`;
+  function downloadBackup() {
+    const d = admin.draw;
+    const lines = [
+      'SECRET SANTA ISD — backup estrazione', `Data estrazione: ${new Date(d.drawnAt).toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}`, '',
+      `CHIAVE DI SBLOCCO (da pubblicare in config.json): ${d.key}`, '',
+      'LINK PERSONALI:', ...d.links.map((l) => `${l.g}: ${linkFor(l)}`), ''
+    ];
+    const url = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' }));
+    const a = Object.assign(document.createElement('a'), { href: url, download: 'secret-santa-isd-backup.txt' });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
-  function countdownHtml() {
-    return `<div class="cd-wrap" data-cd>
-      <div class="countdown" role="timer" aria-label="Conto alla rovescia al pranzo">
+  // ============ Personal link ============
+  async function openPersonalGift(btn) {
+    const st = lockStatus(config);
+    if (st !== 'unlocked') {
+      btn.classList.remove('nope'); void btn.offsetWidth; btn.classList.add('nope');
+      thud();
+      toast(st === 'waiting-time' ? `🔒 Non ancora! Si apre ${fmtDate(config.sblocco)}` : '🔒 Il pacco non è ancora stato sbloccato', true);
+      return;
+    }
+    let receiver = await unseal(config.chiave, personal.g, personal.s);
+    if (!receiver) {
+      // La chiave potrebbe essere stata corretta dopo il caricamento della pagina: riprova con la config aggiornata.
+      await loadConfig();
+      if (lockStatus(config) === 'unlocked') receiver = await unseal(config.chiave, personal.g, personal.s);
+      else { render(); return; }
+    }
+    if (!receiver) {
+      await confirmDialog({ emoji: '😕', title: 'Link non valido', text: 'Questo link non corrisponde all\'estrazione attuale. Chiedi all\'organizzatore di rimandartelo.', ok: 'Ok', cancel: '' });
+      return;
+    }
+    openGift({ giver: personal.g, receiver, budget: config.budget, eventIso: config.dataEvento });
+  }
+
+  // ============ Views ============
+  function countdownHtml(targetIso, doneText) {
+    return `<div class="cd-wrap" data-cd="${esc(targetIso)}">
+      <div class="countdown" role="timer" aria-label="Conto alla rovescia">
         <div class="cd-tile"><b data-cd-d>--</b><small>giorni</small></div>
         <div class="cd-tile"><b data-cd-h>--</b><small>ore</small></div>
         <div class="cd-tile"><b data-cd-m>--</b><small>minuti</small></div>
         <div class="cd-tile"><b data-cd-s>--</b><small>secondi</small></div>
       </div>
-      <div class="cd-done">🎄 È arrivato il giorno! Buon pranzo! 🎄</div>
+      <div class="cd-done">${doneText}</div>
     </div>`;
   }
 
   function viewHome() {
-    const n = state.participants.length;
-    const drawn = !!state.assignments;
-    const seen = drawn ? Object.keys(state.revealed).filter((id) => byId(id)).length : 0;
     return `<section class="hero">
-      <p class="eyebrow">✨ Pranzo di Natale ISD ✨</p>
+      <p class="eyebrow">✨ ${esc(config.titolo)} ✨</p>
       <h1 class="title"><span class="shine">Secret Santa</span></h1>
-      <p class="subtitle">Ci vediamo <strong>${esc(prettyDate(true))}</strong></p>
+      <p class="subtitle">Ci vediamo <strong>${esc(fmtDate(config.dataEvento))}</strong></p>
       <div class="hero-gift"><div class="gift bob" style="--g:min(210px,52vw)" aria-hidden="true">${giftInner()}</div></div>
-      ${countdownHtml()}
-      <div class="cta">
-        ${drawn
-          ? `<button class="btn primary big" data-action="go" data-view="reveal">🎁 Scopri il tuo abbinamento</button>
-             <button class="btn big" data-action="go" data-view="links">🔗 Link personali</button>`
-          : `<button class="btn primary big" data-action="go" data-view="setup">🎅 ${n ? 'Continua a organizzare' : 'Organizza l\'estrazione'}</button>`}
-      </div>
-      ${n ? `<div class="meta-line"><span>👥 ${n} partecipanti</span>${state.budget ? `<span>💶 ${esc(state.budget)}</span>` : ''}${drawn ? `<span>✅ ${seen}/${n} hanno scoperto</span>` : ''}</div>` : ''}
+      ${countdownHtml(config.dataEvento, '🎄 È arrivato il giorno! Buon pranzo! 🎄')}
+      <p class="note-card">🎁 Hai ricevuto il tuo <strong>link personale</strong>? Aprilo: il tuo pacco si potrà aprire ${config.sblocco ? `<strong>${esc(fmtDate(config.sblocco))}</strong>` : 'quando verrà sbloccato'}.</p>
     </section>`;
   }
 
-  function viewSetup() {
-    const ps = state.participants;
-    const n = ps.length;
-    const opts = ps.map((p) => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');
-    const chips = n
-      ? `<div class="chips">${ps.map((p, i) => `<span class="chip"><i class="dot" style="background:${COLORS[i % 6]};color:${COLORS[i % 6]}"></i><span>${esc(p.name)}</span><button data-action="remove" data-id="${esc(p.id)}" aria-label="Rimuovi ${esc(p.name)}">✕</button></span>`).join('')}</div>`
-      : `<div class="empty">Nessun partecipante ancora. Aggiungi il primo nome! 🎄</div>`;
-    const pairs = state.exclusions.length
-      ? `<div class="pairs">${state.exclusions.map(([a, b], i) => `<div class="pair"><span>🚫 ${esc(byId(a)?.name)} ↔ ${esc(byId(b)?.name)}</span><button data-action="unexclude" data-i="${i}" aria-label="Rimuovi esclusione">✕</button></div>`).join('')}</div>`
-      : '';
-    const canDraw = n >= MIN_PEOPLE;
-    return `${tabsHtml()}
-      <h2 class="section">Chi partecipa?</h2>
-      <p class="lead">Inserisci i nomi, aggiungi eventuali esclusioni (es. coppie) e lancia l'estrazione.</p>
-      ${state.assignments ? `<div class="banner"><span aria-hidden="true">✅</span><span>Estrazione già effettuata. Se modifichi partecipanti o esclusioni dovrai rifarla.</span></div>` : ''}
-      <div class="grid-2">
-        <div class="card">
-          <h3>👥 Partecipanti <span class="count-pill">${n}</span></h3>
-          <p class="hint">Premi Invio per aggiungere. Puoi incollare più nomi separati da virgola o a capo.</p>
-          <form class="row" data-form="names" autocomplete="off">
-            <input id="nameInput" class="input" name="person" maxlength="400" placeholder="Es. Giulia Rossi" aria-label="Nome partecipante" enterkeyhint="done">
-            <button class="btn primary" type="submit">Aggiungi</button>
-          </form>
-          ${chips}
-        </div>
-        <div class="stack">
-          <div class="card">
-            <h3>🚫 Esclusioni</h3>
-            <p class="hint">Queste due persone non si estrarranno a vicenda.</p>
-            <form class="stack" data-form="excl" style="gap:10px">
-              <div class="row-2">
-                <select class="input" name="a" aria-label="Prima persona" ${n < 2 ? 'disabled' : ''}><option value="">Persona A</option>${opts}</select>
-                <select class="input" name="b" aria-label="Seconda persona" ${n < 2 ? 'disabled' : ''}><option value="">Persona B</option>${opts}</select>
-              </div>
-              <button class="btn" type="submit" ${n < 2 ? 'disabled' : ''}>Aggiungi esclusione</button>
-            </form>
-            ${pairs}
-          </div>
-          <div class="card">
-            <h3>🎀 Dettagli</h3>
-            <p class="hint">Compaiono nella schermata di rivelazione e nei link.</p>
-            <div class="stack" style="gap:12px">
-              <label class="field">Budget regalo
-                <input class="input" data-field="budget" maxlength="40" placeholder="Es. 20 €" value="${esc(state.budget)}">
-              </label>
-              <label class="field">Data e ora del pranzo
-                <input class="input" type="datetime-local" data-field="eventDate" value="${esc(state.eventDate)}">
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="draw-bar">
-        <button class="btn red big" data-action="draw" ${canDraw ? '' : 'disabled'}>🎲 ${state.assignments ? 'Rifai l\'estrazione' : 'Estrai i nomi!'}</button>
-        ${canDraw ? '' : `<span class="note">Servono almeno ${MIN_PEOPLE} partecipanti</span>`}
-      </div>
-      <div class="actions-foot"><button class="btn small danger" data-action="reset-all">🗑️ Cancella tutto</button></div>`;
-  }
-
-  function viewReveal() {
-    const ps = state.participants;
-    const seen = ps.filter((p) => state.revealed[p.id]).length;
-    const pct = ps.length ? Math.round((seen / ps.length) * 100) : 0;
-    return `${tabsHtml()}
-      <h2 class="section">Chi sta scoprendo?</h2>
-      <p class="lead">Tocca il tuo nome per aprire il pacco. Gli altri… girino lo sguardo! 👀</p>
-      <div class="progress"><div class="bar"><i style="width:${pct}%"></i></div><b>${seen}/${ps.length}</b></div>
-      <div class="orn-grid">
-        ${ps.map((p, i) => {
-          const s = !!state.revealed[p.id];
-          return `<button class="orn ${colorClass(i)} ${s ? 'seen' : ''}" style="--i:${i}" data-action="reveal" data-id="${esc(p.id)}" aria-label="${esc(p.name)}${s ? ', già scoperto' : ''}">
-            <span class="bauble" aria-hidden="true"></span>
-            <span class="orn-name">${esc(p.name)}</span>
-            <span class="orn-state">${s ? '✓ Già scoperto' : 'Tocca per scoprire'}</span>
-          </button>`;
-        }).join('')}
-      </div>
-      <div class="actions-foot">
-        <button class="btn small" data-action="reset-seen">🔄 Azzera "già visto"</button>
-        <button class="btn small danger" data-action="draw">🔁 Rifai estrazione</button>
-      </div>`;
-  }
-
-  function viewLinks() {
-    const ps = state.participants;
-    return `${tabsHtml()}
-      <h2 class="section">Link personali</h2>
-      <p class="lead">Invia a ciascuno il proprio link: aprendolo scoprirà solo il suo abbinamento, con il pacco animato. I nomi nel link sono codificati, quindi non leggibili a colpo d'occhio.</p>
-      <div class="links">
-        ${ps.map((p, i) => `<div class="link-row" style="--i:${i}">
-          <div class="who"><i class="dot" style="background:${COLORS[i % 6]}"></i><span>${esc(p.name)}</span></div>
-          <div class="acts">
-            <button class="btn small" data-action="copy" data-id="${esc(p.id)}" aria-label="Copia link di ${esc(p.name)}">📋 <span class="lbl">Copia</span></button>
-            <button class="btn small primary" data-action="share" data-id="${esc(p.id)}" aria-label="Invia link a ${esc(p.name)}">📨 <span class="lbl">Invia</span></button>
-          </div>
-        </div>`).join('')}
-      </div>
-      <p class="footer-note">⚠️ Se rifai l'estrazione, dovrai inviare di nuovo i link.</p>`;
-  }
-
-  function viewLinkMode() {
-    if (!linkPayload) {
+  function viewPersonal() {
+    if (!personal) {
       return `<section class="hero">
         <p class="eyebrow">Secret Santa ISD</p>
         <h1 class="title" style="font-size:clamp(2.4rem,9vw,4rem)"><span class="shine">Ops! 🎁</span></h1>
         <p class="subtitle">Questo link non è valido o è incompleto. Chiedi all'organizzatore di inviartelo di nuovo.</p>
-        <div class="cta" style="margin-top:24px"><button class="btn" data-action="exit-link">Vai all'app</button></div>
       </section>`;
     }
+    const st = lockStatus(config);
+    renderedStatus = st;
+    const locked = st !== 'unlocked';
+    const sub = st === 'unlocked'
+      ? 'Il tuo pacco è <strong>sbloccato</strong>! Toccalo per scoprire a chi farai il regalo 👆'
+      : st === 'waiting-time'
+        ? `Il tuo pacco è chiuso a chiave 🔒 Si aprirà <strong>${esc(fmtDate(config.sblocco))}</strong>`
+        : config.sblocco
+          ? 'Ci siamo quasi! ⏳ Babbo Natale sta per sbloccare i pacchi… la pagina si aggiorna da sola.'
+          : 'Il tuo pacco è chiuso a chiave 🔒 Verrà sbloccato dall\'organizzatore: la pagina si aggiorna da sola.';
     return `<section class="hero">
       <p class="eyebrow">✨ Secret Santa ISD ✨</p>
-      <h1 class="title" style="font-size:clamp(2.6rem,11vw,5.6rem)">Ciao <span class="shine">${esc(linkPayload.g)}</span>!</h1>
-      <p class="subtitle">Il tuo pacco segreto ti aspetta. Ci vediamo <strong>${esc(prettyDate(true))}</strong></p>
-      <div class="hero-gift"><button class="gift bob" style="--g:min(230px,58vw)" data-action="open-personal" aria-label="Apri il tuo regalo">${giftInner()}</button></div>
-      <p class="subtitle">Tocca il pacco per scoprire a chi farai il regalo 👆</p>
-      ${countdownHtml()}
+      <h1 class="title" style="font-size:clamp(2.6rem,11vw,5.6rem)">Ciao <span class="shine">${esc(personal.g)}</span>!</h1>
+      <p class="subtitle">${sub}</p>
+      <div class="hero-gift"><button class="gift bob ${locked ? 'locked' : ''}" style="--g:min(230px,58vw)" data-action="open-personal" aria-label="${locked ? 'Pacco ancora chiuso' : 'Apri il tuo regalo'}">${giftInner(locked)}</button></div>
+      ${st === 'waiting-time' ? countdownHtml(config.sblocco, '') : ''}
+      ${st === 'unlocked' ? '<p class="status-line">🔓 Sbloccato!</p>' : ''}
+      <p class="note-card">📅 Pranzo: <strong>${esc(fmtDate(config.dataEvento))}</strong>${config.budget ? ` · 💶 Budget: <strong>${esc(config.budget)}</strong>` : ''}</p>
     </section>`;
+  }
+
+  function viewAdmin() {
+    const { csv, draw } = admin;
+    const n = csv.people.length;
+    const groupsColor = new Map();
+    csv.people.forEach((p) => { if (p.group && !groupsColor.has(nameKey(p.group))) groupsColor.set(nameKey(p.group), COLORS[groupsColor.size % COLORS.length]); });
+    const chips = csv.status === 'loading' ? '<div class="empty">Caricamento…</div>'
+      : n ? `<div class="chips">${csv.people.map((p) => {
+        const col = p.group ? groupsColor.get(nameKey(p.group)) : 'rgba(255,255,255,.35)';
+        return `<span class="chip"><i class="dot" style="background:${col};color:${col}"></i><span>${esc(p.name)}</span>${p.group ? `<span class="grp">${esc(p.group)}</span>` : ''}</span>`;
+      }).join('')}</div>`
+      : '<div class="empty">Nessun partecipante caricato.</div>';
+    const errs = csv.errors.length ? `<ul class="errs">${csv.errors.map((e) => `<li>${esc(e)}</li>`).join('')}</ul>` : '';
+    const rosterChanged = draw && draw.roster && csv.status === 'ok' && rosterSig(csv.people.map((p) => p.name)) !== draw.roster;
+    const st = lockStatus(config);
+    const keyPublished = !!config.chiave;
+    const keyMatches = draw && config.chiave === draw.key;
+    const local = location.protocol === 'file:';
+
+    const cfgPills = `<div class="pills">
+      <span class="pill ${configLoaded ? 'ok' : 'warn'}">${configLoaded ? '✓ config.json letto' : '⚠ config.json non raggiungibile'}</span>
+      <span class="pill ${st === 'unlocked' ? 'ok' : 'warn'}">${st === 'unlocked' ? '🔓 Pacchi sbloccati' : '🔒 Pacchi bloccati'}</span>
+      ${keyPublished ? `<span class="pill ${!draw || keyMatches ? 'ok' : 'bad'}">${!draw ? '🔑 Chiave pubblicata' : keyMatches ? '🔑 Chiave pubblicata ✓' : '⚠ Chiave pubblicata diversa da questa estrazione'}</span>` : '<span class="pill">🔑 Chiave non pubblicata</span>'}
+    </div>
+    <p class="hint">Pranzo: <strong>${esc(fmtDate(config.dataEvento))}</strong> · Sblocco: <strong>${config.sblocco ? esc(fmtDate(config.sblocco)) : 'appena pubblichi la chiave'}</strong>${config.budget ? ` · Budget: <strong>${esc(config.budget)}</strong>` : ''}</p>`;
+
+    return `<h2 class="section">Area organizzatore 🎅</h2>
+      <p class="lead">Da qui carichi i partecipanti, fai l'estrazione e ottieni i link da inviare. Questa pagina non è collegata da nessuna parte del sito.</p>
+      ${local ? '<div class="banner"><span aria-hidden="true">⚠️</span><span>Stai usando un file locale: i link punterebbero al tuo computer. Fai l\'estrazione dalla versione pubblicata su GitHub Pages.</span></div>' : ''}
+      ${rosterChanged ? '<div class="banner"><span aria-hidden="true">⚠️</span><span>Il CSV è cambiato dopo l\'estrazione: rifai l\'estrazione e rimanda i link.</span></div>' : ''}
+      <div class="grid-2">
+        <div class="stack">
+          <div class="card">
+            <h3>👥 Partecipanti <span class="count-pill">${n}</span></h3>
+            <p class="hint">${csv.source ? `Da <strong>${esc(csv.source)}</strong>. ` : ''}Stesso <em>gruppo</em> = non si estraggono a vicenda.</p>
+            <div class="row">
+              <button class="btn small" data-action="reload-csv">🔄 Ricarica dal repository</button>
+              <label class="btn small" for="csvFile">📂 Carica un CSV</label>
+              <input id="csvFile" class="file-input" type="file" accept=".csv,text/csv,text/plain">
+            </div>
+            ${chips}
+            ${errs}
+          </div>
+          ${draw ? `<div class="card">
+            <h3>🔗 Link personali <span class="count-pill">${draw.links.length}</span></h3>
+            <p class="hint">Estrazione del ${esc(new Date(draw.drawnAt).toLocaleString('it-IT', { timeZone: 'Europe/Rome' }))}. Il destinatario è cifrato: nemmeno tu puoi vederlo.</p>
+            <div class="links">
+              ${draw.links.map((l, i) => `<div class="link-row" style="--i:${i}">
+                <div class="who"><i class="dot" style="background:${COLORS[i % 6]}"></i><span>${esc(l.g)}</span></div>
+                <div class="acts">
+                  <button class="btn small" data-action="copy" data-i="${i}" aria-label="Copia link di ${esc(l.g)}">📋 <span class="lbl">Copia</span></button>
+                  <button class="btn small primary" data-action="share" data-i="${i}" aria-label="Invia link a ${esc(l.g)}">📨 <span class="lbl">Invia</span></button>
+                </div>
+              </div>`).join('')}
+            </div>
+            <div class="actions-foot"><button class="btn small" data-action="backup">⬇️ Scarica backup (.txt)</button></div>
+          </div>` : ''}
+        </div>
+        <div class="stack">
+          <div class="card">
+            <h3>🔐 Sblocco (config.json)</h3>
+            ${cfgPills}
+            ${draw ? `<p class="hint" style="margin-bottom:4px">Chiave di questa estrazione — <strong>tienila segreta fino allo sblocco</strong>:</p>
+              <div class="key">${esc(draw.key)}</div>
+              <p class="hint" style="margin:12px 0 0">Per sbloccare, sostituisci il contenuto di <code>config.json</code> nel repository con:</p>
+              <pre class="code">${esc(unlockConfigText())}</pre>
+              <div class="row"><button class="btn small" data-action="copy-key">📋 Copia chiave</button><button class="btn small" data-action="copy-config">📋 Copia config.json</button></div>`
+              : '<p class="hint">Dopo l\'estrazione qui troverai la chiave da pubblicare per sbloccare i pacchi.</p>'}
+            <div class="row" style="margin-top:12px"><button class="btn small" data-action="reload-config">🔄 Ricontrolla config.json</button></div>
+          </div>
+          <div class="card admin-draw">
+            <button class="btn red big" data-action="draw" ${n >= MIN_PEOPLE && !admin.busy ? '' : 'disabled'}>🎲 ${draw ? 'Rifai l\'estrazione' : 'Estrai i nomi!'}</button>
+            ${n >= MIN_PEOPLE ? '' : `<span class="note">Servono almeno ${MIN_PEOPLE} partecipanti</span>`}
+            ${draw ? '<button class="btn small danger" data-action="delete-draw">🗑️ Elimina estrazione</button>' : ''}
+          </div>
+        </div>
+      </div>`;
   }
 
   function render() {
     const app = $('#app');
     document.body.dataset.view = view;
-    const html = view === 'setup' ? viewSetup()
-      : view === 'reveal' && state.assignments ? viewReveal()
-      : view === 'links' && state.assignments ? viewLinks()
-      : view === 'link' ? viewLinkMode()
-      : (view = 'home', viewHome());
-    app.innerHTML = html;
-    $('.brand').disabled = view === 'link';
+    app.innerHTML = view === 'admin' ? viewAdmin() : view === 'personal' ? viewPersonal() : viewHome();
+    $('.brand').disabled = view !== 'admin';
     renderSoundBtn();
     updateCountdown();
-    if (focusAfterRender) { $(focusAfterRender)?.focus({ preventScroll: true }); focusAfterRender = null; }
   }
 
   function renderSoundBtn() {
     const b = $('#soundBtn');
-    b.textContent = state.sound ? '🔔' : '🔕';
-    b.setAttribute('aria-pressed', String(state.sound));
-    b.title = state.sound ? 'Suoni attivi' : 'Suoni disattivati';
+    b.textContent = prefs.sound ? '🔔' : '🔕';
+    b.setAttribute('aria-pressed', String(prefs.sound));
+    b.title = prefs.sound ? 'Suoni attivi' : 'Suoni disattivati';
   }
 
   function updateCountdown() {
     const wrap = document.querySelector('[data-cd]');
     if (!wrap) return;
-    const diff = eventDate() - Date.now();
-    wrap.classList.toggle('done', diff <= 0);
-    if (diff <= 0) return;
+    const diff = new Date(wrap.dataset.cd) - Date.now();
+    wrap.classList.toggle('done', !(diff > 0));
+    if (!(diff > 0)) return;
     const s = Math.floor(diff / 1000);
     const set = (k, v) => { const el = wrap.querySelector(`[data-cd-${k}]`); if (el && el.textContent !== v) el.textContent = v; };
     set('d', String(Math.floor(s / 86400)));
@@ -1226,13 +1223,14 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
     set('s', String(s % 60).padStart(2, '0'));
   }
 
-  // ============ Routing (link personali via hash) ============
-  function readHash() {
-    const m = location.hash.match(/^#r=([A-Za-z0-9_-]+)$/);
-    if (m) { linkPayload = decodeToken(m[1]); view = 'link'; return true; }
-    if (location.hash.startsWith('#r=')) { linkPayload = null; view = 'link'; return true; }
-    linkPayload = null;
-    return false;
+  /** Ridisegna la pagina personale se lo stato di blocco è cambiato (orario raggiunto o chiave pubblicata). */
+  function syncPersonalStatus() {
+    if (view !== 'personal' || !personal || overlayRoot.childElementCount) return;
+    const st = lockStatus(config);
+    if (st === renderedStatus) return;
+    const wasLocked = renderedStatus !== 'unlocked';
+    render();
+    if (st === 'unlocked' && wasLocked) { chime(); fx.rain(200); toast('🔓 Il tuo pacco è sbloccato!'); }
   }
 
   // ============ Events ============
@@ -1240,64 +1238,57 @@ label.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); mi
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-action]');
     if (!b || b.disabled || b.closest('.overlay')) return;
-    const id = b.dataset.id;
+    const l = admin.draw?.links[Number(b.dataset.i)];
     switch (b.dataset.action) {
-      case 'home': view = 'home'; render(); scrollTo({ top: 0, behavior: 'smooth' }); break;
-      case 'go': view = b.dataset.view; render(); scrollTo({ top: 0, behavior: 'smooth' }); break;
-      case 'sound': state.sound = !state.sound; save(); renderSoundBtn(); if (state.sound) chime(); break;
-      case 'remove': removeParticipant(id); break;
-      case 'unexclude': removeExclusion(Number(b.dataset.i)); break;
+      case 'home': location.hash = ''; break;
+      case 'sound': prefs.sound = !prefs.sound; store.save(PREFS_KEY, prefs); renderSoundBtn(); if (prefs.sound) chime(); break;
+      case 'open-personal': openPersonalGift(b); break;
+      case 'reload-csv': loadCSVFromRepo(); break;
+      case 'reload-config': loadConfig().then(() => { render(); toast(configLoaded ? 'config.json aggiornato' : 'config.json non raggiungibile', !configLoaded); }); break;
       case 'draw': doDraw(); break;
-      case 'reveal': revealFor(id); break;
-      case 'reset-seen': resetSeen(); break;
-      case 'reset-all': resetAll(); break;
-      case 'copy': copyText(personalLink(id)).then((ok) => toast(ok ? `Link di ${byId(id).name} copiato 📋` : 'Copia non riuscita', !ok)); break;
-      case 'share': shareLink(id); break;
-      case 'open-personal':
-        if (linkPayload) openGift({ giver: linkPayload.g, receiver: linkPayload.r, budget: linkPayload.b, confirm: false });
-        break;
-      case 'exit-link': history.replaceState(null, '', location.pathname + location.search); view = 'home'; render(); break;
+      case 'delete-draw': deleteDraw(); break;
+      case 'copy': if (l) copyText(linkFor(l)).then((ok) => toast(ok ? `Link di ${l.g} copiato 📋` : 'Copia non riuscita', !ok)); break;
+      case 'share': if (l) shareLink(l); break;
+      case 'backup': if (admin.draw) downloadBackup(); break;
+      case 'copy-key': if (admin.draw) copyText(admin.draw.key).then((ok) => toast(ok ? 'Chiave copiata 🔑' : 'Copia non riuscita', !ok)); break;
+      case 'copy-config': if (admin.draw) copyText(unlockConfigText()).then((ok) => toast(ok ? 'config.json copiato 📋' : 'Copia non riuscita', !ok)); break;
     }
-  });
-
-  app.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const f = e.target;
-    if (f.dataset.form === 'names') {
-      const input = f.elements.namedItem('person');
-      const list = splitNames(input.value);
-      input.value = '';
-      if (list.length) addNames(list); else toast('Scrivi un nome', true);
-    } else if (f.dataset.form === 'excl') {
-      addExclusion(f.a.value, f.b.value);
-    }
-  });
-
-  app.addEventListener('paste', (e) => {
-    if (e.target.id !== 'nameInput') return;
-    const text = e.clipboardData?.getData('text') || '';
-    if (/[\n,;]/.test(text)) { e.preventDefault(); e.target.value = ''; addNames(splitNames(text)); }
   });
 
   app.addEventListener('change', (e) => {
-    const f = e.target.dataset.field;
-    if (f === 'budget') { state.budget = normalizeName(e.target.value).slice(0, 40); save(); }
-    else if (f === 'eventDate') {
-      if (e.target.value && !isNaN(new Date(e.target.value))) { state.eventDate = e.target.value; save(); }
-      else e.target.value = state.eventDate;
-    }
+    if (e.target.id !== 'csvFile') return;
+    const file = e.target.files?.[0];
+    if (!file) return;
+    file.text().then((t) => { applyCSV(t, file.name); render(); toast(`${admin.csv.people.length} partecipanti caricati`); })
+      .catch(() => toast('File non leggibile', true));
   });
 
-  addEventListener('hashchange', () => { closeOverlayNow(); if (!readHash() && view === 'link') view = 'home'; render(); });
+  addEventListener('hashchange', () => {
+    closeOverlayNow();
+    const prev = view;
+    readHash();
+    render();
+    if (view === 'admin' && prev !== 'admin' && admin.csv.status === 'idle') loadCSVFromRepo();
+    scrollTo({ top: 0 });
+  });
 
   // ============ Boot ============
   readHash();
   initSky();
   render();
-  setInterval(updateCountdown, 1000);
+  loadConfig().then(() => { render(); if (view === 'admin') loadCSVFromRepo(); });
+  setInterval(() => { updateCountdown(); syncPersonalStatus(); }, 1000);
+  // Ricontrolla config.json finché i pacchi sono bloccati, così lo sblocco arriva senza ricaricare.
+  setInterval(() => {
+    if (document.hidden || view !== 'personal' || !personal || lockStatus(config) === 'unlocked') return;
+    loadConfig().then(syncPersonalStatus);
+  }, POLL_MS);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && view === 'personal' && lockStatus(config) !== 'unlocked') loadConfig().then(syncPersonalStatus);
+  });
 
   // Esposto solo per i test automatici
-  window.__ss = { computeDraw, blockedGivers, encodeToken, decodeToken, isValidAssignment, sanitizeState };
+  window.__ss = { computeDraw, blockedGivers, isValidAssignment, participantsFromCSV, exclusionsFromGroups, sanitizeConfig, lockStatus, seal, unseal, newKey, encodeToken, decodeToken };
 })();
 </script>
 </body>

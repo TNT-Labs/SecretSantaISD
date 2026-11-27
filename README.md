@@ -1,21 +1,54 @@
 # 🎅 Secret Santa ISD
 
-Web app per l'estrazione del Secret Santa del **pranzo di Natale ISD (11 dicembre)**.
-È un'unica pagina statica (`index.html`), senza backend: funziona su GitHub Pages.
+Web app statica per il Secret Santa del **pranzo di Natale ISD (11 dicembre)**, pubblicata con GitHub Pages.
 
-## Funzioni
-- **Partecipanti**: aggiunta rapida (anche più nomi incollati, separati da virgola o a capo); i duplicati vengono bloccati.
-- **Esclusioni**: coppie che non devono estrarsi a vicenda (es. partner).
-- **Estrazione**: algoritmo completo (trova sempre una soluzione se ne esiste una), nessuno estrae sé stesso; se possibile evita gli scambi reciproci (A→B e B→A).
-- **Scoperta a schermo condiviso**: ognuno tocca il proprio nome e apre il pacco animato (con coriandoli, raggi di luce e suoni); i nomi già scoperti vengono segnati.
-- **Link personali**: un link per persona da inviare (WhatsApp/condivisione): mostra solo il proprio abbinamento. I nomi nel link sono codificati (non leggibili a colpo d'occhio, ma non è una cifratura forte).
-- Conto alla rovescia, budget e data/ora del pranzo modificabili.
+| Pagina | Indirizzo | Chi la vede |
+|---|---|---|
+| Home (solo countdown) | `https://tnt-labs.github.io/SecretSantaISD/` | tutti |
+| Link personale | `…/SecretSantaISD/#r=…` | ogni partecipante (il suo link) |
+| Area organizzatore | `…/SecretSantaISD/#organizza` | solo tu (non è collegata da nessuna parte) |
 
-I dati restano salvati nel browser del dispositivo dell'organizzatore (`localStorage`).
+## File da modificare nel repository
 
-## Pubblicazione su GitHub Pages
+### `partecipanti.csv`
+```csv
+nome,gruppo
+Mario Rossi,1
+Laura Bianchi,1
+Paolo Verdi,
+```
+- **nome** (obbligatorio): un partecipante per riga, massimo 40 caratteri.
+- **gruppo** (facoltativo): chi ha lo **stesso gruppo non si estrae a vicenda** (es. coppie, stesso ufficio). Lascia vuoto se non serve.
+- Separatore `,` oppure `;` (va bene anche il CSV esportato da Excel). Le righe che iniziano con `#` sono commenti. I duplicati vengono segnalati e ignorati.
+
+### `config.json`
+```json
+{
+  "titolo": "Pranzo di Natale ISD",
+  "dataEvento": "2026-12-11T13:00:00+01:00",
+  "sblocco": "2026-12-11T13:00:00+01:00",
+  "chiave": "",
+  "budget": ""
+}
+```
+- **dataEvento**: data del pranzo (countdown della home).
+- **sblocco**: da quando si possono aprire i pacchi. Se vuoto (`""`), si aprono appena pubblichi la chiave.
+- **chiave**: vuota finché i pacchi sono bloccati. Per sbloccarli incolla qui la chiave dell'estrazione.
+- **budget**: testo libero, es. `"20 €"` (facoltativo).
+
+I pacchi si aprono solo quando **la chiave è pubblicata e l'orario di sblocco è passato**. Le pagine aperte ricontrollano `config.json` ogni 30 secondi: lo sblocco arriva da solo, senza ricaricare.
+
+## Come funziona la sicurezza
+Il destinatario dentro ogni link è **cifrato (AES‑GCM)** con una chiave generata durante l'estrazione. Finché la chiave non è in `config.json` nessuno, nemmeno tu, può leggerlo. Il nome di chi riceve il link è legato al testo cifrato, quindi i link non si possono scambiare o manomettere.
+
+## Procedura
+1. Compila `partecipanti.csv` e fai commit.
+2. Apri `https://tnt-labs.github.io/SecretSantaISD/#organizza`, controlla l'elenco e premi **Estrai i nomi!**
+3. Invia a ciascuno il proprio link (**Copia** / **Invia**) e scarica il **backup .txt**: contiene la chiave e tutti i link (l'estrazione è salvata solo nel browser in cui l'hai fatta).
+4. Il giorno dello sblocco copia la chiave in `config.json` (il pulsante **Copia config.json** ti dà il file già pronto) e fai commit. Dopo circa un minuto GitHub Pages pubblica la modifica.
+
+> Se rifai l'estrazione viene generata una nuova chiave: i vecchi link non funzionano più e vanno rimandati.
+
+## Attivare GitHub Pages
 1. Unisci questo branch in `main`.
-2. Su GitHub: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, cartella `/ (root)`.
-3. Dopo un minuto l'app sarà su `https://tnt-labs.github.io/SecretSantaISD/`.
-
-> I link personali puntano all'indirizzo da cui li generi: creali dalla versione pubblicata su Pages, non da un file aperto in locale.
+2. **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, cartella `/ (root)`.
