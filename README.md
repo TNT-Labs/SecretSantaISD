@@ -39,6 +39,9 @@ Paolo Verdi,
 2. Ognuno tocca il proprio nome → conferma "Sei davvero tu?" → apre il pacco.
 3. L'estrazione resta salvata nel browser dell'organizzatore (anche se ricarichi la pagina). **Esci** chiude l'accesso.
 
+## Suoni
+Tutti i suoni sono sintetizzati nel browser (nessun file audio): rullo di tamburi durante l'estrazione, piatto e fanfara alla fine, campanellino alla selezione del nome, pacco che trema, coperchio che salta, pioggia di campanelle e accordo quando appare il nome. Il pulsante 🔔 in alto a destra li attiva o disattiva (la scelta viene ricordata).
+
 ## Attivare GitHub Pages
 1. Unisci questo branch in `main`.
 2. **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, cartella `/ (root)`.

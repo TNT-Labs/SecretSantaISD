@@ -582,43 +582,142 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     try { return new Intl.DateTimeFormat('it-IT', opts).format(d); } catch { return d.toLocaleString(); }
   }
 
-  // ============ Audio (WebAudio, nessun file) ============
+  // ============ Audio (WebAudio sintetizzato, nessun file) ============
   const prefs = Object.assign({ sound: true }, store.load(PREFS_KEY, {}));
-  let actx = null;
-  function audio() {
-    if (!prefs.sound) return null;
-    try {
-      if (!actx) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; actx = new C(); }
-      if (actx.state === 'suspended') actx.resume();
-      return actx;
-    } catch { return null; }
-  }
-  function bell(ctx, freq, t, dur = 1.8, vol = .16) {
-    const out = ctx.createGain();
-    out.gain.setValueAtTime(0.0001, t);
-    out.gain.exponentialRampToValueAtTime(vol, t + .01);
-    out.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    out.connect(ctx.destination);
-    [[1, 1], [2.76, .35], [5.4, .15]].forEach(([m, a]) => {
+  const sfx = (() => {
+    let ctx = null, master = null, reverb = null, noiseBuf = null;
+    function init() {
+      if (!prefs.sound) return null;
+      try {
+        if (!ctx) {
+          const C = window.AudioContext || window.webkitAudioContext;
+          if (!C) return null;
+          ctx = new C();
+          const comp = ctx.createDynamicsCompressor();
+          comp.threshold.value = -14; comp.ratio.value = 6;
+          comp.connect(ctx.destination);
+          master = ctx.createGain(); master.gain.value = .9; master.connect(comp);
+          // Riverbero generato (coda di rumore che decade): dà "aria" a campanelle e brillantini.
+          const len = Math.floor(ctx.sampleRate * 2.4);
+          const ir = ctx.createBuffer(2, len, ctx.sampleRate);
+          for (let ch = 0; ch < 2; ch++) { const d = ir.getChannelData(ch); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2); }
+          reverb = ctx.createConvolver(); reverb.buffer = ir;
+          const rg = ctx.createGain(); rg.gain.value = .32; reverb.connect(rg); rg.connect(comp);
+          noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+          const nd = noiseBuf.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+        }
+        if (ctx.state === 'suspended') ctx.resume();
+        return ctx;
+      } catch { return null; }
+    }
+    function bus(wet = .25) {
+      const g = ctx.createGain(); g.connect(master);
+      if (wet) { const w = ctx.createGain(); w.gain.value = wet; g.connect(w); w.connect(reverb); }
+      return g;
+    }
+    function env(param, t, a, peak, d) {
+      param.setValueAtTime(0.0001, t);
+      param.exponentialRampToValueAtTime(peak, t + a);
+      param.exponentialRampToValueAtTime(0.0001, t + a + d);
+    }
+    function tone(type, f, t, d, peak, dest, { a = .005, to = 0 } = {}) {
       const o = ctx.createOscillator(), g = ctx.createGain();
-      o.type = 'sine'; o.frequency.value = freq * m; g.gain.value = a;
-      o.connect(g); g.connect(out); o.start(t); o.stop(t + dur);
-    });
-  }
-  function chime() {
-    const ctx = audio(); if (!ctx) return;
-    const t = ctx.currentTime + .02;
-    [784, 988, 1175, 1568, 1976].forEach((f, i) => bell(ctx, f, t + i * .11, 2.2, .12));
-  }
-  function sparkle() {
-    const ctx = audio(); if (!ctx) return;
-    const t = ctx.currentTime + .02;
-    for (let i = 0; i < 14; i++) bell(ctx, 1200 + Math.random() * 1800, t + i * .06, .6, .05);
-  }
-  function tick() {
-    const ctx = audio(); if (!ctx) return;
-    bell(ctx, 1600 + Math.random() * 400, ctx.currentTime + .01, .15, .04);
-  }
+      o.type = type; o.frequency.setValueAtTime(f, t);
+      if (to) o.frequency.exponentialRampToValueAtTime(to, t + a + d);
+      env(g.gain, t, a, peak, d);
+      o.connect(g); g.connect(dest); o.start(t); o.stop(t + a + d + .05);
+    }
+    function noise(t, d, peak, dest, { type = 'bandpass', f = 1000, q = 1, to = 0, a = .003 } = {}) {
+      const src = ctx.createBufferSource(), fl = ctx.createBiquadFilter(), g = ctx.createGain();
+      src.buffer = noiseBuf; src.loop = true;
+      fl.type = type; fl.Q.value = q; fl.frequency.setValueAtTime(f, t);
+      if (to) fl.frequency.exponentialRampToValueAtTime(to, t + a + d);
+      env(g.gain, t, a, peak, d);
+      src.connect(fl); fl.connect(g); g.connect(dest);
+      src.start(t, Math.random() * .5); src.stop(t + a + d + .05);
+    }
+    function bell(f, t, d, vol, dest) {
+      [[1, 1], [2.76, .32], [5.4, .12]].forEach(([m, a]) => tone('sine', f * m, t, d / m ** .3, vol * a, dest, { a: .004 }));
+    }
+    const play = (fn) => () => { if (init()) fn(ctx.currentTime + .015); };
+    const NOTES = { C5: 523.25, D5: 587.33, E5: 659.25, G5: 783.99, A5: 880, C6: 1046.5, E6: 1318.5, G6: 1568, C7: 2093 };
+
+    return {
+      /** Tocco su un pulsante: "pop" morbido. */
+      tap: play((t) => { tone('sine', 520, t, .07, .09, bus(.08), { to: 820 }); }),
+      /** Selezione di un nome: campanellino di vetro. */
+      select: play((t) => { const o = bus(.45); bell(NOTES.E6, t, .9, .09, o); bell(NOTES.G6 * 1.5, t + .07, .7, .05, o); }),
+      /** Passaggio del mouse su un nome (solo dispositivi con hover). */
+      hover: play((t) => { tone('sine', 1800 + Math.random() * 900, t, .12, .025, bus(.5)); }),
+      /** Apertura di una finestra. */
+      open: play((t) => { noise(t, .35, .05, bus(.2), { f: 600, to: 2600, q: .8, a: .05 }); bell(NOTES.C6, t + .05, .5, .04, bus(.4)); }),
+      /** Chiusura: piccola discesa. */
+      close: play((t) => { const o = bus(.4); [NOTES.G6, NOTES.E6, NOTES.C6].forEach((f, i) => bell(f, t + i * .07, .6, .05, o)); }),
+      /** Cifra che scorre durante la rivelazione del nome. */
+      tick: play((t) => { tone('triangle', 1700 + Math.random() * 500, t, .03, .035, bus(.15)); }),
+      error: play((t) => { const o = bus(.05); tone('square', 160, t, .12, .05, o); tone('square', 120, t + .14, .18, .05, o); }),
+      unlock: play((t) => { const o = bus(.4); noise(t, .05, .12, o, { f: 3500, q: 2 }); [NOTES.C6, NOTES.E6, NOTES.G6].forEach((f, i) => bell(f, t + .08 + i * .09, 1, .07, o)); }),
+      toggleOn: play((t) => { const o = bus(.4); bell(NOTES.G5, t, .8, .08, o); bell(NOTES.C6, t + .1, 1, .08, o); }),
+      reset: play((t) => { noise(t, .45, .07, bus(.3), { f: 3000, to: 400, q: .7, a: .03 }); }),
+
+      /** Estrazione: rullo di tamburi che accelera + "riser" + brillantini, per `dur` secondi. */
+      drawSequence(dur) {
+        if (!init()) return;
+        const t0 = ctx.currentTime + .02, o = bus(.18), sp = bus(.5);
+        noise(t0, .6, .12, o, { f: 400, to: 3000, q: .7, a: .08 });                     // whoosh iniziale
+        tone('sawtooth', 110, t0, dur, .035, o, { a: dur * .8, to: 440 });               // riser
+        tone('sine', 55, t0, dur, .12, o, { a: dur * .9, to: 70 });                      // rombo di fondo
+        let t = t0 + .1;
+        while (t < t0 + dur - .05) {                                                     // rullante sempre più fitto
+          const p = (t - t0) / dur;
+          noise(t, .07, .05 + p * .14, o, { f: 1800 + p * 1200, q: .9, a: .002 });
+          t += .13 - p * .1 + Math.random() * .01;
+        }
+        for (let i = 0; i < 18; i++) bell(1400 + Math.random() * 2200, t0 + Math.random() * dur, .5, .025, sp);
+      },
+      /** Fine estrazione: piatto + colpo di grancassa + fanfara. */
+      crash: play((t) => {
+        const o = bus(.35);
+        noise(t, 1.8, .22, o, { type: 'highpass', f: 4500, q: .5 });
+        tone('sine', 140, t, .5, .5, bus(0), { to: 40 });
+        const brass = bus(.3);
+        [[NOTES.C5, 0], [NOTES.E5, .1], [NOTES.G5, .2], [NOTES.C6, .32]].forEach(([f, dt]) => {
+          tone('sawtooth', f, t + .1 + dt, dt === .32 ? 1.1 : .16, .05, brass, { a: .02 });
+          tone('triangle', f * 2, t + .1 + dt, dt === .32 ? 1.1 : .16, .04, brass, { a: .02 });
+        });
+        [NOTES.C6, NOTES.E6, NOTES.G6, NOTES.C7].forEach((f, i) => bell(f, t + .45 + i * .06, 1.6, .05, bus(.5)));
+      }),
+
+      /** Pacco che trema: fruscii di carta e colpi sordi della scatola. */
+      rattle: play((t) => {
+        const o = bus(.12);
+        for (let i = 0; i < 12; i++) {
+          const p = i / 12, at = t + i * .06 + Math.random() * .015;
+          noise(at, .05, .05 + p * .1, o, { f: 2200 + Math.random() * 1500, q: 1.2 });
+          if (i % 3 === 0) tone('sine', 95 + Math.random() * 20, at, .09, .18 + p * .15, o);
+        }
+      }),
+      /** Coperchio che salta via: "pop" + soffio verso l'alto. */
+      pop: play((t) => {
+        const o = bus(.3);
+        tone('sine', 300, t, .09, .35, o, { to: 1300 });
+        noise(t, .03, .2, o, { f: 1500, q: .7 });
+        noise(t + .03, .7, .1, o, { f: 500, to: 5000, q: .6, a: .05 });
+      }),
+      /** Raggi di luce: pioggia di campanelle con molto riverbero. */
+      shimmer: play((t) => {
+        const o = bus(.7), scale = [NOTES.C6, NOTES.D5 * 2, NOTES.E6, NOTES.G6, NOTES.A5 * 2, NOTES.C7];
+        for (let i = 0; i < 16; i++) bell(scale[i % scale.length] * (i > 8 ? 1.5 : 1), t + i * .055, .9, .04, o);
+      }),
+      /** Nome rivelato: accordo luminoso + carillon. */
+      reveal: play((t) => {
+        const o = bus(.55);
+        [NOTES.C5, NOTES.E5, NOTES.G5].forEach((f) => tone('triangle', f, t, 1.6, .05, o, { a: .03 }));
+        [NOTES.G5, NOTES.C6, NOTES.E6, NOTES.G6, NOTES.C7].forEach((f, i) => bell(f, t + i * .09, 2, .08, o));
+      }),
+      mute() { try { if (ctx && ctx.state === 'running') ctx.suspend(); } catch { /* ignore */ } }
+    };
+  })();
 
   // ============ Sky (stelle + neve) ============
   function initSky() {
@@ -776,11 +875,12 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
             ${cancel ? `<button class="btn" data-v="0">${esc(cancel)}</button>` : ''}
             <button class="btn ${danger ? 'red' : 'primary'}" data-v="1">${esc(ok)}</button>
           </div>
-        </div>`, () => finish(false));
+        </div>`, () => { sfx.close(); finish(false); });
+      sfx.open();
       el.addEventListener('click', (e) => {
         const b = e.target.closest('[data-v]');
-        if (b) finish(b.dataset.v === '1');
-        else if (e.target === el) finish(false);
+        if (b) { (b.dataset.v === '1' ? sfx.tap : sfx.close)(); finish(b.dataset.v === '1'); }
+        else if (e.target === el) { sfx.close(); finish(false); }
       });
       el.querySelector('[data-v="1"]').focus();
     });
@@ -800,7 +900,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
         const p = Math.min(1, (t - t0) / duration);
         const done = Math.floor(p * chars.length);
         el.textContent = chars.map((ch, i) => (i < done || ch === ' ') ? ch : pool[(Math.random() * pool.length) | 0]).join('');
-        if (t - lastTick > 90) { tick(); lastTick = t; }
+        if (t - lastTick > 90) { sfx.tick(); lastTick = t; }
         if (p < 1) requestAnimationFrame(step); else { el.textContent = target; resolve(); }
       }
       requestAnimationFrame(step);
@@ -845,7 +945,8 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
             <button class="btn primary big" data-a="done">Fatto, nascondi 🎄</button>
           </div>
         </div>
-      </div>`, () => finish());
+      </div>`, () => { sfx.close(); finish(); });
+    if (!confirm) sfx.open();
 
     let opened = false, closed = false;
     const stage = el.querySelector('.stage');
@@ -866,12 +967,14 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       el.querySelector('.tap').style.opacity = '0';
       gift.classList.remove('bob');
       gift.classList.add('shake');
+      sfx.rattle();
       await wait(750);
       if (closed) return;
       gift.classList.remove('shake');
       gift.classList.add('open');
       stage.classList.add('opened');
-      chime();
+      sfx.pop();
+      setTimeout(() => { if (!closed) sfx.shimmer(); }, 200);
       const r = gift.getBoundingClientRect();
       fx.burst(r.left + r.width / 2, r.top + r.height / 2, 200);
       if (onOpened) onOpened();
@@ -880,14 +983,15 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       stage.classList.add('revealed');
       await scramble(el.querySelector('.prize .name'), receiver, 1100);
       if (closed) return;
+      sfx.reveal();
       fx.rain(90);
       el.querySelector('.after').classList.add('show');
       el.querySelector('[data-a="done"]').focus({ preventScroll: true });
     }
     el.addEventListener('click', (e) => {
       const a = e.target.closest('[data-a]')?.dataset.a;
-      if (a === 'go') showGift();
-      else if (a === 'cancel' || a === 'done') finish();
+      if (a === 'go') { sfx.select(); showGift(); }
+      else if (a === 'cancel' || a === 'done') { sfx.close(); finish(); }
       else if (a === 'open') open();
     });
     (confirm ? el.querySelector('[data-a="go"]') : gift).focus();
@@ -908,12 +1012,11 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
         <div class="core" aria-hidden="true">🎁</div>
         <div class="draw-caption">Mescolo i nomi…</div>
       </div>`);
-    sparkle();
-    const ticker = reduceMotion ? 0 : setInterval(tick, 140);
+    sfx.drawSequence((reduceMotion ? 300 : dur) / 1000);
     await wait(dur * .75);
     el.querySelector('.draw-caption').textContent = 'Ci siamo… ✨';
     await wait(dur * .25);
-    clearInterval(ticker);
+    sfx.crash();
     const flash = document.createElement('div');
     flash.className = 'flash';
     document.body.appendChild(flash);
@@ -956,11 +1059,13 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     if (config.passwordHash && h === config.passwordHash) {
       store.save(AUTH_KEY, h, 'sessionStorage');
       org.authed = true; org.loginError = false;
+      sfx.unlock();
       render();
       loadCSV();
     } else {
       org.loginError = true;
       render();
+      sfx.error();
       toast('Password errata', true);
     }
   }
@@ -1008,7 +1113,6 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       await playDrawAnimation(shuffle(names));
       org.draw = { assignments: res, revealed: {}, roster: rosterSig(names), drawnAt: Date.now() };
       saveDraw();
-      chime();
       fx.rain(220);
       toast('Estrazione completata! 🎉');
     } finally { org.busy = false; render(); }
@@ -1035,7 +1139,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
 
   async function resetSeen() {
     const ok = await confirmDialog({ emoji: '🔄', title: 'Azzerare i "già scoperto"?', text: 'Tutti torneranno nello stato "da scoprire". Gli abbinamenti non cambiano.', ok: 'Azzera' });
-    if (ok) { org.draw.revealed = {}; saveDraw(); render(); }
+    if (ok) { sfx.reset(); org.draw.revealed = {}; saveDraw(); render(); }
   }
 
   // ============ Views ============
@@ -1179,17 +1283,32 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-action]');
     if (!b || b.disabled || b.closest('.overlay')) return;
+    const own = ['sound', 'draw', 'reveal'];
+    if (!own.includes(b.dataset.action)) sfx.tap();
     switch (b.dataset.action) {
       case 'home': location.hash = ''; break;
-      case 'sound': prefs.sound = !prefs.sound; store.save(PREFS_KEY, prefs); renderSoundBtn(); if (prefs.sound) chime(); break;
+      case 'sound': prefs.sound = !prefs.sound; store.save(PREFS_KEY, prefs); renderSoundBtn(); if (prefs.sound) sfx.toggleOn(); else sfx.mute(); break;
       case 'reload-csv': loadCSV(); break;
-      case 'draw': doDraw(); break;
-      case 'reveal': if (org.draw) revealFor(Object.keys(org.draw.assignments)[Number(b.dataset.i)]); break;
+      case 'draw': sfx.tap(); doDraw(); break;
+      case 'reveal': sfx.select(); if (org.draw) revealFor(Object.keys(org.draw.assignments)[Number(b.dataset.i)]); break;
       case 'reset-seen': resetSeen(); break;
       case 'logout': logout(); break;
       case 'copy-hash': copyText(`"passwordHash": "${org.setupHash}"`).then((ok) => toast(ok ? 'Copiato 📋' : 'Copia non riuscita', !ok)); break;
     }
   });
+
+  // Tintinnio leggero passando sopra i nomi (solo con mouse), limitato per non diventare fastidioso.
+  if (matchMedia('(hover: hover)').matches) {
+    let lastHover = 0, lastOrn = null;
+    app.addEventListener('pointerover', (e) => {
+      const o = e.target.closest('.orn');
+      if (!o || o === lastOrn) return;
+      lastOrn = o;
+      const now = performance.now();
+      if (now - lastHover > 120) { lastHover = now; sfx.hover(); }
+    });
+    app.addEventListener('pointerout', (e) => { if (!e.relatedTarget?.closest?.('.orn')) lastOrn = null; });
+  }
 
   app.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -1200,7 +1319,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     if (btn) btn.disabled = true;
     try {
       if (f.dataset.form === 'login') await login(pw);
-      else if (f.dataset.form === 'setup' && pw.length >= 6) { org.setupHash = await hashPassword(pw); render(); }
+      else if (f.dataset.form === 'setup' && pw.length >= 6) { sfx.tap(); org.setupHash = await hashPassword(pw); render(); }
     } catch {
       toast('Il browser non supporta la crittografia necessaria (serve HTTPS).', true);
     } finally { if (btn && document.contains(btn)) btn.disabled = false; }
@@ -1238,7 +1357,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
   setInterval(updateCountdown, 1000);
 
   // Esposto solo per i test automatici
-  window.__ss = { computeDraw, blockedGivers, isValidAssignment, participantsFromCSV, exclusionsFromGroups, sanitizeConfig, hashPassword };
+  window.__ss = { computeDraw, blockedGivers, isValidAssignment, participantsFromCSV, exclusionsFromGroups, sanitizeConfig, hashPassword, sfx };
 })();
 </script>
 </body>
