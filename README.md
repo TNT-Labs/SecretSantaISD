@@ -22,11 +22,13 @@ Paolo Verdi,
   "titolo": "Pranzo di Natale ISD",
   "dataEvento": "2026-12-11T13:00:00+01:00",
   "budget": "",
+  "musica": "musica.mp3",
   "passwordHash": ""
 }
 ```
 - **dataEvento**: data e ora del pranzo (countdown). Gli orari sono mostrati in ora italiana.
 - **budget**: testo libero, es. `"20 €"` (facoltativo).
+- **musica**: file audio della pagina pubblica (vedi sotto). Lascia `""` per non avere musica.
 - **passwordHash**: impronta della password dell'organizzatore (la password in chiaro non va mai nel repository).
 
 ### Impostare la password
@@ -38,6 +40,11 @@ Paolo Verdi,
 1. Apri `#organizza`, inserisci la password, controlla l'elenco e premi **Estrai i nomi!**
 2. Ognuno tocca il proprio nome → conferma "Sei davvero tu?" → apre il pacco.
 3. L'estrazione resta salvata nel browser dell'organizzatore (anche se ricarichi la pagina). **Esci** chiude l'accesso.
+
+## Musica della pagina pubblica
+1. Carica il file nella cartella principale del repository con il nome **`musica.mp3`** (oppure scrivi il nome che preferisci in `config.json` → `musica`). Consigliato sotto i 5 MB per un caricamento veloce da telefono.
+2. La musica parte all'apertura della pagina, in loop e con dissolvenza. Se il browser blocca l'avvio automatico (succede quasi sempre alla prima visita: è una regola di Chrome/Safari), parte al primo tocco sullo schermo e compare un suggerimento.
+3. Il pulsante 🎵 in alto a destra la mette in pausa o la riattiva (la scelta viene ricordata). Si ferma da sola nell'area organizzatore e quando la scheda non è visibile.
 
 ## Suoni
 Tutti i suoni sono sintetizzati nel browser (nessun file audio): rullo di tamburi durante l'estrazione, piatto e fanfara alla fine, campanellino alla selezione del nome, pacco che trema, coperchio che salta, pioggia di campanelle e accordo quando appare il nome. Il pulsante 🔔 in alto a destra li attiva o disattiva (la scelta viene ricordata).
