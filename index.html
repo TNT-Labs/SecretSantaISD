@@ -504,7 +504,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
     return ids.filter((g) => !ids.some((r) => ok(g, r)));
   }
 
-  /** Backtracking randomizzato con euristica MRV; ritorna {giver: receiver} o null. */
+  /** Backtracking randomizzato con euristica MRV; ritorna {persona: chi le fa il regalo} o null. */
   function solve(ids, ok, noMutual, rng) {
     const options = (g) => ids.filter((r) => ok(g, r)).length;
     const givers = shuffle(ids, rng).sort((a, b) => options(a) - options(b));
@@ -910,7 +910,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
   /**
    * Rivelazione: conferma "Sei davvero X?" (opzionale) → pacco → scossa → coperchio vola via → raggi + coriandoli → nome.
    */
-  function openGift({ giver, receiver, confirm, onOpened, onClose }) {
+  function openGift({ person, santa, confirm, onOpened, onClose }) {
     const pills = [
       config.budget ? `<span>💶 Budget: ${esc(config.budget)}</span>` : '',
       `<span>📅 ${esc(fmtDate(config.dataEvento, false))}</span>`
@@ -919,7 +919,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       <div class="reveal">
         <div class="card dialog step-confirm" ${confirm ? '' : 'hidden'}>
           <div class="emoji" aria-hidden="true">🤫</div>
-          <h3>Sei davvero ${esc(giver)}?</h3>
+          <h3>Sei davvero ${esc(person)}?</h3>
           <p>Prima di aprire il pacco, assicurati che nessun altro stia guardando lo schermo.</p>
           <div class="row">
             <button class="btn" data-a="cancel">Annulla</button>
@@ -928,14 +928,14 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
         </div>
         <div class="step-gift" ${confirm ? 'hidden' : ''}>
           <p class="eyebrow">Secret Santa ISD</p>
-          <h2 class="hello">Ciao <span class="shine">${esc(giver)}</span>!</h2>
+          <h2 class="hello">Ciao <span class="shine">${esc(person)}</span>!</h2>
           <p class="tap">Tocca il pacco per aprirlo ✨</p>
           <div class="stage">
             <div class="rays" aria-hidden="true"></div>
             <button class="gift bob" data-a="open" aria-label="Apri il pacco regalo">${giftInner()}</button>
             <div class="prize" aria-live="polite">
               <span class="star" aria-hidden="true">⭐</span>
-              <span class="lbl">Farai il regalo a</span>
+              <span class="lbl">Riceverai il regalo da</span>
               <span class="name shine"></span>
             </div>
           </div>
@@ -981,7 +981,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       await wait(350);
       if (closed) return;
       stage.classList.add('revealed');
-      await scramble(el.querySelector('.prize .name'), receiver, 1100);
+      await scramble(el.querySelector('.prize .name'), santa, 1100);
       if (closed) return;
       sfx.reveal();
       fx.rain(90);
@@ -1120,8 +1120,8 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
 
   async function revealFor(name) {
     const d = org.draw;
-    const receiver = d?.assignments[name];
-    if (!receiver) return;
+    const santa = d?.assignments[name];
+    if (!santa) return;
     const seen = !!d.revealed[name];
     if (seen) {
       const ok = await confirmDialog({
@@ -1131,7 +1131,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       if (!ok) return;
     }
     openGift({
-      giver: name, receiver, confirm: !seen,
+      person: name, santa, confirm: !seen,
       onOpened: () => { d.revealed[name] = true; saveDraw(); },
       onClose: (opened) => { if (opened) render(); }
     });
@@ -1162,7 +1162,7 @@ code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px
       <p class="subtitle">Ci vediamo <strong>${esc(fmtDate(config.dataEvento))}</strong></p>
       <div class="hero-gift"><div class="gift bob" style="--g:min(210px,52vw)" aria-hidden="true">${giftInner()}</div></div>
       ${countdownHtml(config.dataEvento, '🎄 È arrivato il giorno! Buon pranzo! 🎄')}
-      <p class="note-card">🎁 L'estrazione si farà <strong>dal vivo al pranzo</strong>: scoprirai lì a chi farai il regalo.${config.budget ? ` Budget: <strong>${esc(config.budget)}</strong>.` : ''}</p>
+      <p class="note-card">🎁 L'estrazione si farà <strong>dal vivo al pranzo</strong>: scoprirai lì chi ti farà il regalo.${config.budget ? ` Budget: <strong>${esc(config.budget)}</strong>.` : ''}</p>
     </section>`;
   }
 
