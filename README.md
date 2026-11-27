@@ -43,7 +43,7 @@ Paolo Verdi,
 
 ## Musica della pagina pubblica
 1. Carica il file nella cartella principale del repository con il nome **`musica.mp3`** (oppure scrivi il nome che preferisci in `config.json` → `musica`). Consigliato sotto i 5 MB per un caricamento veloce da telefono.
-2. La musica parte all'apertura della pagina, in loop e con dissolvenza. Se il browser blocca l'avvio automatico (succede quasi sempre alla prima visita: è una regola di Chrome/Safari), parte al primo tocco sullo schermo e compare un suggerimento.
+2. La musica parte all'apertura della pagina, in loop e con dissolvenza. Se il browser blocca l'avvio automatico (succede quasi sempre alla prima visita: è una regola di Chrome/Safari), parte al primo tocco sullo schermo; intanto un fumetto animato accanto all'icona 🎵 invita ad ascoltarla (*"Babbo Natale ha messo su un disco!"*).
 3. Il pulsante 🎵 in alto a destra la mette in pausa o la riattiva (la scelta viene ricordata). Si ferma da sola nell'area organizzatore e quando la scheda non è visibile.
 
 ## Suoni
