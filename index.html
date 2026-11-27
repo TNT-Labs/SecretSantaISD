@@ -132,9 +132,6 @@ h2.section { font-family: var(--serif); font-style: italic; font-size: clamp(1.9
 .card h3 { margin: 0 0 4px; font-size: 1.15rem; display: flex; align-items: center; gap: 10px; }
 .card .hint { margin: 0 0 14px; color: var(--muted); font-size: .92rem; }
 .count-pill { font-size: .8rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: rgba(255, 215, 122, .16); color: var(--gold); }
-.grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
-@media (min-width: 820px) { .grid-2 { grid-template-columns: 1.25fr 1fr; align-items: start; } }
-.stack { display: grid; gap: 16px; min-width: 0; }
 .row { display: flex; gap: 10px; align-items: stretch; flex-wrap: wrap; }
 
 /* Chips */
@@ -213,43 +210,64 @@ h2.section { font-family: var(--serif); font-style: italic; font-size: clamp(1.9
 @keyframes swing { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
 .actions-foot { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 26px; }
 
-/* ---------- Links ---------- */
-.links { display: grid; gap: 10px; }
-.link-row { display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 16px; border-radius: 16px; background: rgba(255, 255, 255, .06); border: 1px solid var(--line); min-width: 0; animation: rise .45s both; animation-delay: calc(var(--i, 0) * 35ms); }
-.link-row .who { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; }
-.link-row .who span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
-.link-row .who .dot { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 auto; }
-.link-row .acts { display: flex; gap: 8px; flex: 0 0 auto; }
-@media (max-width: 480px) { .link-row .btn.small .lbl { display: none; } .link-row .btn.small { width: 44px; padding: 0; } }
 
 /* ---------- Note / status ---------- */
 .note-card { margin: 4px 0 0; max-width: 520px; padding: 14px 18px; border-radius: 16px; background: rgba(255, 255, 255, .06); border: 1px solid var(--line); color: var(--muted); }
 .note-card strong { color: var(--fg); }
-.status-line { margin: 6px 0 0; font-weight: 600; color: var(--gold); min-height: 1.5em; }
-.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px; font-size: .9rem; font-weight: 600; border: 1px solid var(--line); background: rgba(255, 255, 255, .06); }
-.pill.ok { color: #9ff3cf; border-color: rgba(47, 213, 154, .5); background: rgba(47, 213, 154, .12); }
-.pill.warn { color: #ffe3a1; border-color: rgba(255, 215, 122, .5); background: rgba(255, 215, 122, .1); }
-.pill.bad { color: #ffc0ca; border-color: rgba(255, 110, 130, .5); background: rgba(232, 50, 79, .12); }
-.pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; }
 .errs { margin: 12px 0 0; padding-left: 20px; color: #ffc0ca; font-size: .92rem; }
-pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: rgba(0, 0, 0, .4); border: 1px solid var(--line); font: .85rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; white-space: pre-wrap; word-break: break-all; color: #dfe6ff; }
-.key { font: 700 1.05rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .04em; color: var(--gold); word-break: break-all; }
-.file-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-.admin-draw { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
-.admin-draw .note { font-size: .88rem; color: var(--muted); }
 .chip .grp { font-size: .72rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: rgba(255, 255, 255, .12); color: var(--muted); }
 .chip { padding: 6px 14px; }
 
-/* ---------- Locked gift ---------- */
-.gift .lock {
-  position: absolute; left: 50%; top: 66%; z-index: 3; width: calc(var(--g) * .28); aspect-ratio: 1; border-radius: 50%;
-  transform: translate(-50%, -50%); display: grid; place-items: center; font-size: calc(var(--g) * .14);
-  background: radial-gradient(circle at 35% 30%, #3d4680, #141a3c); border: 2px solid rgba(255, 215, 122, .75);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, .5), 0 0 22px rgba(255, 215, 122, .35);
+
+/* ---------- Inputs ---------- */
+.input {
+  width: 100%; min-width: 0; min-height: 52px; padding: 12px 16px; border-radius: 14px;
+  border: 1px solid var(--line); background: rgba(5, 8, 25, .55); outline: none; font-size: 1.05rem;
+  transition: border-color .2s, box-shadow .2s;
 }
-.gift.locked { filter: saturate(.85); }
-.gift.nope { animation: nope .5s ease both; }
-@keyframes nope { 20%, 60% { transform: translateX(-7px) rotate(-3deg); } 40%, 80% { transform: translateX(7px) rotate(3deg); } }
+.input:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(255, 215, 122, .18); }
+.input::placeholder { color: #7f88b0; }
+.login { width: min(440px, 100%); margin: 6vh auto 0; text-align: center; }
+.login form { display: grid; gap: 12px; margin-top: 8px; }
+.login .emoji { font-size: 46px; line-height: 1; }
+.login.err { animation: nope .45s ease both; }
+@keyframes nope { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+code.hash { display: block; margin-top: 10px; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, .4); border: 1px solid var(--line); font: .82rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; word-break: break-all; text-align: left; color: #dfe6ff; }
+
+/* ---------- Ornament grid (scoperta) ---------- */
+.progress { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; }
+.progress .bar { flex: 1; height: 10px; border-radius: 999px; background: rgba(255, 255, 255, .08); overflow: hidden; border: 1px solid var(--line); }
+.progress .bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--green), var(--gold)); box-shadow: 0 0 16px rgba(47, 213, 154, .6); transition: width .6s cubic-bezier(.2, .8, .2, 1); }
+.progress b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.orn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+@media (max-width: 420px) { .orn-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+.orn {
+  --c1: #ff6075; --c2: #b0142f;
+  position: relative; min-width: 0; padding: 46px 12px 16px; border-radius: 20px; border: 1px solid var(--line);
+  background: linear-gradient(170deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .025));
+  display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
+  transition: transform .3s cubic-bezier(.2, 1.4, .4, 1), box-shadow .3s, border-color .3s;
+  animation: rise .5s cubic-bezier(.2, .9, .3, 1) both; animation-delay: calc(var(--i, 0) * 40ms);
+  margin-top: 22px;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(18px) scale(.95); } }
+@media (hover: hover) { .orn:hover { transform: translateY(-6px) rotate(-1deg); border-color: rgba(255, 215, 122, .55); box-shadow: 0 18px 40px rgba(0, 0, 0, .4), 0 0 40px rgba(255, 215, 122, .15); } }
+.orn .bauble {
+  position: absolute; top: -26px; left: 50%; width: 58px; height: 58px; margin-left: -29px; border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .95) 0 6%, transparent 18%), radial-gradient(circle at 40% 35%, var(--c1), var(--c2) 75%);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .45), 0 0 26px color-mix(in srgb, var(--c1) 45%, transparent);
+  transform-origin: 50% -14px; animation: swing 3.6s ease-in-out infinite; animation-delay: calc(var(--i, 0) * -370ms);
+}
+.orn .bauble::before { content: ''; position: absolute; top: -9px; left: 50%; width: 16px; height: 10px; margin-left: -8px; border-radius: 3px; background: linear-gradient(90deg, #a77a26, #ffe39a, #a77a26); }
+.orn .bauble::after { content: ''; position: absolute; left: 12%; right: 12%; top: 46%; height: 9%; border-radius: 4px; background: rgba(255, 255, 255, .28); }
+@keyframes swing { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+.orn-name { font-weight: 700; font-size: 1.08rem; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.orn-state { font-size: .8rem; color: var(--muted); }
+.orn.seen { opacity: .62; }
+.orn.seen .bauble { filter: saturate(.35) brightness(.9); animation-play-state: paused; }
+.orn.seen .orn-state { color: var(--green); font-weight: 600; }
+.c1 { --c1: #ff6075; --c2: #a3122d; } .c2 { --c1: #ffd77a; --c2: #b97a14; } .c3 { --c1: #4be3ad; --c2: #0d7a54; }
+.c4 { --c1: #78b5ff; --c2: #1d4fb0; } .c5 { --c1: #d68cff; --c2: #6a2aa8; } .c6 { --c1: #e6f3ff; --c2: #7f9bbd; }
 
 /* ---------- Overlays ---------- */
 .overlay {
@@ -371,19 +389,17 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
   // ============ Config & utilities ============
   const CONFIG_URL = 'config.json';
   const CSV_URL = 'partecipanti.csv';
-  const ADMIN_KEY = 'ssisd.admin.v2';
+  const DRAW_KEY = 'ssisd.draw.v3';
+  const AUTH_KEY = 'ssisd.auth';
   const PREFS_KEY = 'ssisd.prefs';
   const MAX_NAME = 40;
   const MIN_PEOPLE = 3;
-  const POLL_MS = 30000;
   const DEFAULT_CONFIG = Object.freeze({
     titolo: 'Pranzo di Natale ISD',
     dataEvento: '2026-12-11T13:00:00+01:00',
-    sblocco: '2026-12-11T13:00:00+01:00',
-    chiave: '',
-    budget: ''
+    budget: '',
+    passwordHash: ''
   });
-  const OBF_KEY = new TextEncoder().encode('ISD*SecretSanta*2026');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const COLORS = ['#ff6075', '#ffd77a', '#4be3ad', '#78b5ff', '#d68cff', '#e6f3ff'];
 
@@ -394,9 +410,9 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
   const nameKey = (s) => normalizeName(s).toLocaleLowerCase('it');
 
   const store = {
-    load(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch { return d; } },
-    save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* storage non disponibile */ } },
-    del(k) { try { localStorage.removeItem(k); } catch { /* ignore */ } }
+    load(k, d, area = 'localStorage') { try { const v = JSON.parse(window[area].getItem(k)); return v ?? d; } catch { return d; } },
+    save(k, v, area = 'localStorage') { try { window[area].setItem(k, JSON.stringify(v)); } catch { /* storage non disponibile */ } },
+    del(k, area = 'localStorage') { try { window[area].removeItem(k); } catch { /* ignore */ } }
   };
 
   // ============ Pure logic: CSV ============
@@ -524,70 +540,37 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
     return null;
   }
 
-  // ============ Crypto (AES-GCM) & token ============
-  const b64u = (bytes) => { let bin = ''; bytes.forEach((b) => { bin += String.fromCharCode(b); }); return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); };
-  const fromB64u = (s) => { const b = s.replace(/-/g, '+').replace(/_/g, '/'); return Uint8Array.from(atob(b + '==='.slice((b.length + 3) % 4)), (c) => c.charCodeAt(0)); };
-  const isKeyFormat = (k) => typeof k === 'string' && /^[A-Za-z0-9_-]{22}$/.test(k);
-
-  function newKey() { return b64u(crypto.getRandomValues(new Uint8Array(16))); }
-  function importKey(k) { return crypto.subtle.importKey('raw', fromB64u(k), 'AES-GCM', false, ['encrypt', 'decrypt']); }
-
-  /** Cifra il destinatario; il nome di chi regala è legato al testo cifrato (AAD) e non si può scambiare. */
-  async function seal(key, giver, receiver) {
-    const iv = crypto.getRandomValues(new Uint8Array(12));
-    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv, additionalData: new TextEncoder().encode(nameKey(giver)) }, await importKey(key), new TextEncoder().encode(receiver));
-    return b64u(iv) + '.' + b64u(new Uint8Array(ct));
-  }
-  async function unseal(key, giver, sealed) {
-    try {
-      const [iv, ct] = sealed.split('.');
-      const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromB64u(iv), additionalData: new TextEncoder().encode(nameKey(giver)) }, await importKey(key), fromB64u(ct));
-      return normalizeName(new TextDecoder().decode(pt)) || null;
-    } catch { return null; }
-  }
-
-  function encodeToken(obj) {
-    const bytes = new TextEncoder().encode(JSON.stringify(obj));
-    return b64u(bytes.map((b, i) => b ^ OBF_KEY[i % OBF_KEY.length] ^ ((i * 37) & 255)));
-  }
-  function decodeToken(tok) {
-    try {
-      const bytes = fromB64u(tok).map((b, i) => b ^ OBF_KEY[i % OBF_KEY.length] ^ ((i * 37) & 255));
-      const o = JSON.parse(new TextDecoder().decode(bytes));
-      if (!o || o.v !== 2 || typeof o.g !== 'string' || typeof o.s !== 'string' || !normalizeName(o.g) || !o.s.includes('.')) return null;
-      return { g: normalizeName(o.g), s: o.s };
-    } catch { return null; }
-  }
-
   // ============ Config pubblicata ============
   const validDate = (s) => typeof s === 'string' && s.trim() !== '' && !isNaN(new Date(s));
+  const isHash = (h) => typeof h === 'string' && /^[0-9a-f]{64}$/.test(h);
   function sanitizeConfig(raw) {
     const c = { ...DEFAULT_CONFIG };
     if (!raw || typeof raw !== 'object') return c;
     if (typeof raw.titolo === 'string' && raw.titolo.trim()) c.titolo = raw.titolo.trim().slice(0, 60);
     if (validDate(raw.dataEvento)) c.dataEvento = raw.dataEvento;
-    c.sblocco = validDate(raw.sblocco) ? raw.sblocco : (raw.sblocco === '' ? '' : c.dataEvento);
-    c.chiave = isKeyFormat(raw.chiave) ? raw.chiave : '';
     c.budget = typeof raw.budget === 'string' ? raw.budget.trim().slice(0, 40) : '';
+    c.passwordHash = isHash(String(raw.passwordHash || '').toLowerCase()) ? raw.passwordHash.toLowerCase() : '';
     return c;
-  }
-  /** 'unlocked' | 'waiting-time' (chiave presente, orario non ancora raggiunto) | 'waiting-key' */
-  function lockStatus(cfg, now = Date.now()) {
-    const timeOk = !cfg.sblocco || now >= new Date(cfg.sblocco).getTime();
-    if (cfg.chiave && timeOk) return 'unlocked';
-    return timeOk ? 'waiting-key' : 'waiting-time';
   }
 
   let config = { ...DEFAULT_CONFIG };
-  let configLoaded = false;
+  let configStatus = 'loading'; // 'loading' | 'ok' | 'error'
   async function loadConfig() {
     try {
       const r = await fetch(`${CONFIG_URL}?t=${Date.now()}`, { cache: 'no-store' });
       if (!r.ok) throw new Error(r.status);
       config = sanitizeConfig(await r.json());
-      configLoaded = true;
-    } catch { /* offline o file locale: si usano i valori correnti */ }
+      configStatus = 'ok';
+    } catch { configStatus = 'error'; }
     return config;
+  }
+
+  /** PBKDF2-SHA256: nel repository si pubblica solo l'impronta, mai la password. */
+  async function hashPassword(pw) {
+    const enc = new TextEncoder();
+    const base = await crypto.subtle.importKey('raw', enc.encode(pw), 'PBKDF2', false, ['deriveBits']);
+    const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', salt: enc.encode('SecretSantaISD'), iterations: 200000, hash: 'SHA-256' }, base, 256);
+    return [...new Uint8Array(bits)].map((b) => b.toString(16).padStart(2, '0')).join('');
   }
 
   // ============ Date helpers ============
@@ -635,10 +618,6 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
   function tick() {
     const ctx = audio(); if (!ctx) return;
     bell(ctx, 1600 + Math.random() * 400, ctx.currentTime + .01, .15, .04);
-  }
-  function thud() {
-    const ctx = audio(); if (!ctx) return;
-    bell(ctx, 180, ctx.currentTime + .01, .35, .12);
   }
 
   // ============ Sky (stelle + neve) ============
@@ -808,7 +787,7 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
   }
 
   // ============ Gift ============
-  const giftInner = (locked = false) => '<span class="gift-glow"></span><span class="gift-body"></span><span class="gift-lid"><span class="bow"><i></i></span></span>' + (locked ? '<span class="lock" aria-hidden="true">🔒</span>' : '');
+  const giftInner = () => '<span class="gift-glow"></span><span class="gift-body"></span><span class="gift-lid"><span class="bow"><i></i></span></span>';
 
   function scramble(el, target, duration = 1200) {
     return new Promise((resolve) => {
@@ -819,8 +798,8 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
       let lastTick = 0;
       function step(t) {
         const p = Math.min(1, (t - t0) / duration);
-        const lock = Math.floor(p * chars.length);
-        el.textContent = chars.map((ch, i) => (i < lock || ch === ' ') ? ch : pool[(Math.random() * pool.length) | 0]).join('');
+        const done = Math.floor(p * chars.length);
+        el.textContent = chars.map((ch, i) => (i < done || ch === ' ') ? ch : pool[(Math.random() * pool.length) | 0]).join('');
         if (t - lastTick > 90) { tick(); lastTick = t; }
         if (p < 1) requestAnimationFrame(step); else { el.textContent = target; resolve(); }
       }
@@ -828,37 +807,59 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
     });
   }
 
-  /** Rivelazione: pacco → scossa → coperchio vola via → raggi + coriandoli → nome. */
-  function openGift({ giver, receiver, budget, eventIso }) {
+  /**
+   * Rivelazione: conferma "Sei davvero X?" (opzionale) → pacco → scossa → coperchio vola via → raggi + coriandoli → nome.
+   */
+  function openGift({ giver, receiver, confirm, onOpened, onClose }) {
     const pills = [
-      budget ? `<span>💶 Budget: ${esc(budget)}</span>` : '',
-      eventIso ? `<span>📅 ${esc(fmtDate(eventIso, false))}</span>` : ''
+      config.budget ? `<span>💶 Budget: ${esc(config.budget)}</span>` : '',
+      `<span>📅 ${esc(fmtDate(config.dataEvento, false))}</span>`
     ].join('');
     const el = openOverlay(`
       <div class="reveal">
-        <p class="eyebrow">Secret Santa ISD</p>
-        <h2 class="hello">Ciao <span class="shine">${esc(giver)}</span>!</h2>
-        <p class="tap">Tocca il pacco per aprirlo ✨</p>
-        <div class="stage">
-          <div class="rays" aria-hidden="true"></div>
-          <button class="gift bob" data-a="open" aria-label="Apri il pacco regalo">${giftInner()}</button>
-          <div class="prize" aria-live="polite">
-            <span class="star" aria-hidden="true">⭐</span>
-            <span class="lbl">Farai il regalo a</span>
-            <span class="name shine"></span>
+        <div class="card dialog step-confirm" ${confirm ? '' : 'hidden'}>
+          <div class="emoji" aria-hidden="true">🤫</div>
+          <h3>Sei davvero ${esc(giver)}?</h3>
+          <p>Prima di aprire il pacco, assicurati che nessun altro stia guardando lo schermo.</p>
+          <div class="row">
+            <button class="btn" data-a="cancel">Annulla</button>
+            <button class="btn primary" data-a="go">Sì, sono io 👀</button>
           </div>
         </div>
-        <div class="after">
-          <div class="info-pills">${pills}</div>
-          <p class="secret-note">Shhh… è un segreto! 🤐 Non dirlo a nessuno.</p>
-          <button class="btn primary big" data-a="done">Fatto, nascondi 🎄</button>
+        <div class="step-gift" ${confirm ? 'hidden' : ''}>
+          <p class="eyebrow">Secret Santa ISD</p>
+          <h2 class="hello">Ciao <span class="shine">${esc(giver)}</span>!</h2>
+          <p class="tap">Tocca il pacco per aprirlo ✨</p>
+          <div class="stage">
+            <div class="rays" aria-hidden="true"></div>
+            <button class="gift bob" data-a="open" aria-label="Apri il pacco regalo">${giftInner()}</button>
+            <div class="prize" aria-live="polite">
+              <span class="star" aria-hidden="true">⭐</span>
+              <span class="lbl">Farai il regalo a</span>
+              <span class="name shine"></span>
+            </div>
+          </div>
+          <div class="after">
+            <div class="info-pills">${pills}</div>
+            <p class="secret-note">Shhh… è un segreto! 🤐 Non dirlo a nessuno.</p>
+            <button class="btn primary big" data-a="done">Fatto, nascondi 🎄</button>
+          </div>
         </div>
       </div>`, () => finish());
 
     let opened = false, closed = false;
     const stage = el.querySelector('.stage');
     const gift = el.querySelector('.gift');
-    async function finish() { if (closed) return; closed = true; await closeOverlay(); }
+    async function finish() {
+      if (closed) return; closed = true;
+      await closeOverlay();
+      if (onClose) onClose(opened);
+    }
+    function showGift() {
+      el.querySelector('.step-confirm').hidden = true;
+      el.querySelector('.step-gift').hidden = false;
+      gift.focus();
+    }
     async function open() {
       if (opened) return; opened = true;
       gift.disabled = true;
@@ -873,6 +874,7 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
       chime();
       const r = gift.getBoundingClientRect();
       fx.burst(r.left + r.width / 2, r.top + r.height / 2, 200);
+      if (onOpened) onOpened();
       await wait(350);
       if (closed) return;
       stage.classList.add('revealed');
@@ -884,10 +886,11 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
     }
     el.addEventListener('click', (e) => {
       const a = e.target.closest('[data-a]')?.dataset.a;
-      if (a === 'done') finish();
+      if (a === 'go') showGift();
+      else if (a === 'cancel' || a === 'done') finish();
       else if (a === 'open') open();
     });
-    gift.focus();
+    (confirm ? el.querySelector('[data-a="go"]') : gift).focus();
   }
 
   // ============ Draw animation ============
@@ -908,7 +911,7 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
     sparkle();
     const ticker = reduceMotion ? 0 : setInterval(tick, 140);
     await wait(dur * .75);
-    el.querySelector('.draw-caption').textContent = 'Cifro i pacchi… 🔒';
+    el.querySelector('.draw-caption').textContent = 'Ci siamo… ✨';
     await wait(dur * .25);
     clearInterval(ticker);
     const flash = document.createElement('div');
@@ -918,57 +921,78 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
     closeOverlayNow();
   }
 
-  // ============ Router state ============
-  let view = 'home';          // 'home' | 'personal' | 'admin'
-  let personal = null;        // { g, s } | null (link non valido)
-  let renderedStatus = null;  // stato di blocco mostrato nell'ultima render della pagina personale
+  // ============ Organizer ============
+  let view = 'home'; // 'home' | 'admin'
+  const readHash = () => { view = location.hash === '#organizza' ? 'admin' : 'home'; };
 
-  function readHash() {
-    const h = location.hash;
-    if (h === '#organizza') { view = 'admin'; personal = null; return; }
-    const m = h.match(/^#r=([A-Za-z0-9_-]+)$/);
-    if (h.startsWith('#r=')) { view = 'personal'; personal = m ? decodeToken(m[1]) : null; return; }
-    view = 'home'; personal = null;
-  }
-
-  // ============ Admin (organizzatore) ============
-  const admin = {
-    csv: { status: 'idle', people: [], errors: [], source: '' },
-    draw: sanitizeDraw(store.load(ADMIN_KEY, null)),
+  const org = {
+    authed: false,
+    loginError: false,
+    setupHash: '',
+    csv: { status: 'idle', people: [], errors: [] },
+    draw: null,
     busy: false
   };
+
   function sanitizeDraw(d) {
-    if (!d || !isKeyFormat(d.key) || !Array.isArray(d.links) || !d.links.length) return null;
-    const links = d.links.filter((l) => l && typeof l.g === 'string' && typeof l.t === 'string' && decodeToken(l.t));
-    return links.length === d.links.length ? { key: d.key, drawnAt: Number(d.drawnAt) || 0, links, roster: typeof d.roster === 'string' ? d.roster : '' } : null;
+    if (!d || typeof d !== 'object' || !d.assignments) return null;
+    const names = Object.keys(d.assignments);
+    if (names.length < 2 || !isValidAssignment(d.assignments, names)) return null;
+    const revealed = {};
+    if (d.revealed && typeof d.revealed === 'object') names.forEach((n) => { if (d.revealed[n] === true) revealed[n] = true; });
+    return { assignments: d.assignments, revealed, roster: typeof d.roster === 'string' ? d.roster : '', drawnAt: Number(d.drawnAt) || 0 };
   }
+  org.draw = sanitizeDraw(store.load(DRAW_KEY, null));
+  const saveDraw = () => (org.draw ? store.save(DRAW_KEY, org.draw) : store.del(DRAW_KEY));
   const rosterSig = (names) => names.map(nameKey).sort().join('\n');
 
-  async function loadCSVFromRepo() {
-    admin.csv = { ...admin.csv, status: 'loading' };
+  function checkSession() {
+    org.authed = !!config.passwordHash && store.load(AUTH_KEY, '', 'sessionStorage') === config.passwordHash;
+  }
+
+  async function login(pw) {
+    if (!pw) return;
+    const h = await hashPassword(pw);
+    if (config.passwordHash && h === config.passwordHash) {
+      store.save(AUTH_KEY, h, 'sessionStorage');
+      org.authed = true; org.loginError = false;
+      render();
+      loadCSV();
+    } else {
+      org.loginError = true;
+      render();
+      toast('Password errata', true);
+    }
+  }
+
+  function logout() {
+    store.del(AUTH_KEY, 'sessionStorage');
+    org.authed = false;
+    location.hash = '';
+  }
+
+  async function loadCSV() {
+    org.csv = { ...org.csv, status: 'loading' };
     render();
     try {
       const r = await fetch(`${CSV_URL}?t=${Date.now()}`, { cache: 'no-store' });
       if (!r.ok) throw new Error('HTTP ' + r.status);
-      applyCSV(await r.text(), CSV_URL);
+      const { people, errors } = participantsFromCSV(await r.text());
+      org.csv = { status: 'ok', people, errors };
     } catch {
-      admin.csv = { status: 'error', people: [], errors: [`Impossibile leggere ${CSV_URL} dal sito. Se stai lavorando in locale usa "Carica un CSV".`], source: '' };
+      org.csv = { status: 'error', people: [], errors: [`Impossibile leggere ${CSV_URL} dal sito.`] };
     }
     render();
   }
-  function applyCSV(text, source) {
-    const { people, errors } = participantsFromCSV(text);
-    admin.csv = { status: 'ok', people, errors, source };
-  }
 
   async function doDraw() {
-    if (admin.busy) return;
-    const people = admin.csv.people;
+    if (org.busy) return;
+    const people = org.csv.people;
     if (people.length < MIN_PEOPLE) { toast(`Servono almeno ${MIN_PEOPLE} partecipanti`, true); return; }
-    if (admin.draw) {
+    if (org.draw) {
       const ok = await confirmDialog({
         emoji: '🔁', title: 'Rifare l\'estrazione?',
-        text: 'Verrà generata una nuova chiave: tutti i link già inviati smetteranno di funzionare e andranno rimandati.',
+        text: 'Gli abbinamenti attuali verranno sostituiti e chi ha già scoperto dovrà scoprire di nuovo.',
         ok: 'Sì, rifai', danger: true
       });
       if (!ok) return;
@@ -979,87 +1003,39 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
     if (blocked.length) { toast(`${blocked.join(', ')}: nessuno da estrarre, gruppo troppo grande`, true); return; }
     const res = computeDraw(names, exclusions);
     if (!res) { toast('Impossibile estrarre con questi gruppi. Riduci le esclusioni.', true); return; }
-    admin.busy = true;
+    org.busy = true;
     try {
-      const key = newKey();
-      const sealing = Promise.all(names.map(async (g) => ({ g, t: encodeToken({ v: 2, g, s: await seal(key, g, res[g]) }) })));
       await playDrawAnimation(shuffle(names));
-      const links = await sealing;
-      admin.draw = { key, drawnAt: Date.now(), links, roster: rosterSig(names) };
-      store.save(ADMIN_KEY, admin.draw);
+      org.draw = { assignments: res, revealed: {}, roster: rosterSig(names), drawnAt: Date.now() };
+      saveDraw();
       chime();
       fx.rain(220);
-      toast('Estrazione completata e cifrata! 🎉');
-    } catch {
-      toast('Errore durante la cifratura: usa un browser aggiornato (HTTPS).', true);
-    } finally { admin.busy = false; render(); }
+      toast('Estrazione completata! 🎉');
+    } finally { org.busy = false; render(); }
   }
 
-  async function deleteDraw() {
-    const ok = await confirmDialog({ emoji: '🗑️', title: 'Eliminare l\'estrazione?', text: 'Chiave e link salvati su questo dispositivo verranno cancellati. I link già inviati non potranno più essere aperti.', ok: 'Elimina', danger: true });
-    if (!ok) return;
-    admin.draw = null; store.del(ADMIN_KEY); render(); toast('Estrazione eliminata');
+  async function revealFor(name) {
+    const d = org.draw;
+    const receiver = d?.assignments[name];
+    if (!receiver) return;
+    const seen = !!d.revealed[name];
+    if (seen) {
+      const ok = await confirmDialog({
+        emoji: '👀', title: `${name} ha già scoperto`,
+        text: 'Vuoi rivederlo? Assicurati che sia proprio questa persona a guardare.', ok: 'Rivedi'
+      });
+      if (!ok) return;
+    }
+    openGift({
+      giver: name, receiver, confirm: !seen,
+      onOpened: () => { d.revealed[name] = true; saveDraw(); },
+      onClose: (opened) => { if (opened) render(); }
+    });
   }
 
-  const linkBase = () => location.href.split('#')[0];
-  const linkFor = (l) => `${linkBase()}#r=${l.t}`;
-  const unlockConfigText = () => JSON.stringify({
-    titolo: config.titolo, dataEvento: config.dataEvento, sblocco: config.sblocco, chiave: admin.draw?.key || '', budget: config.budget
-  }, null, 2);
-  const shareMessage = (l) => `🎅 Ciao ${l.g}! Ecco il tuo link segreto per il Secret Santa ISD.\nIl pacco si potrà aprire ${config.sblocco ? fmtDate(config.sblocco) : 'quando verrà sbloccato'} 🔒\n${linkFor(l)}`;
-
-  async function copyText(text) {
-    try { await navigator.clipboard.writeText(text); return true; } catch {
-      try {
-        const ta = document.createElement('textarea');
-        ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;opacity:0';
-        document.body.appendChild(ta); ta.select();
-        const ok = document.execCommand('copy'); ta.remove(); return ok;
-      } catch { return false; }
-    }
-  }
-  async function shareLink(l) {
-    const text = shareMessage(l);
-    if (navigator.share) {
-      try { await navigator.share({ title: 'Secret Santa ISD', text }); return; }
-      catch (e) { if (e && e.name === 'AbortError') return; }
-    }
-    window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank', 'noopener');
-  }
-  function downloadBackup() {
-    const d = admin.draw;
-    const lines = [
-      'SECRET SANTA ISD — backup estrazione', `Data estrazione: ${new Date(d.drawnAt).toLocaleString('it-IT', { timeZone: 'Europe/Rome' })}`, '',
-      `CHIAVE DI SBLOCCO (da pubblicare in config.json): ${d.key}`, '',
-      'LINK PERSONALI:', ...d.links.map((l) => `${l.g}: ${linkFor(l)}`), ''
-    ];
-    const url = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' }));
-    const a = Object.assign(document.createElement('a'), { href: url, download: 'secret-santa-isd-backup.txt' });
-    document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  }
-
-  // ============ Personal link ============
-  async function openPersonalGift(btn) {
-    const st = lockStatus(config);
-    if (st !== 'unlocked') {
-      btn.classList.remove('nope'); void btn.offsetWidth; btn.classList.add('nope');
-      thud();
-      toast(st === 'waiting-time' ? `🔒 Non ancora! Si apre ${fmtDate(config.sblocco)}` : '🔒 Il pacco non è ancora stato sbloccato', true);
-      return;
-    }
-    let receiver = await unseal(config.chiave, personal.g, personal.s);
-    if (!receiver) {
-      // La chiave potrebbe essere stata corretta dopo il caricamento della pagina: riprova con la config aggiornata.
-      await loadConfig();
-      if (lockStatus(config) === 'unlocked') receiver = await unseal(config.chiave, personal.g, personal.s);
-      else { render(); return; }
-    }
-    if (!receiver) {
-      await confirmDialog({ emoji: '😕', title: 'Link non valido', text: 'Questo link non corrisponde all\'estrazione attuale. Chiedi all\'organizzatore di rimandartelo.', ok: 'Ok', cancel: '' });
-      return;
-    }
-    openGift({ giver: personal.g, receiver, budget: config.budget, eventIso: config.dataEvento });
+  async function resetSeen() {
+    const ok = await confirmDialog({ emoji: '🔄', title: 'Azzerare i "già scoperto"?', text: 'Tutti torneranno nello stato "da scoprire". Gli abbinamenti non cambiano.', ok: 'Azzera' });
+    if (ok) { org.draw.revealed = {}; saveDraw(); render(); }
   }
 
   // ============ Views ============
@@ -1082,41 +1058,39 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
       <p class="subtitle">Ci vediamo <strong>${esc(fmtDate(config.dataEvento))}</strong></p>
       <div class="hero-gift"><div class="gift bob" style="--g:min(210px,52vw)" aria-hidden="true">${giftInner()}</div></div>
       ${countdownHtml(config.dataEvento, '🎄 È arrivato il giorno! Buon pranzo! 🎄')}
-      <p class="note-card">🎁 Hai ricevuto il tuo <strong>link personale</strong>? Aprilo: il tuo pacco si potrà aprire ${config.sblocco ? `<strong>${esc(fmtDate(config.sblocco))}</strong>` : 'quando verrà sbloccato'}.</p>
+      <p class="note-card">🎁 L'estrazione si farà <strong>dal vivo al pranzo</strong>: scoprirai lì a chi farai il regalo.${config.budget ? ` Budget: <strong>${esc(config.budget)}</strong>.` : ''}</p>
     </section>`;
   }
 
-  function viewPersonal() {
-    if (!personal) {
-      return `<section class="hero">
-        <p class="eyebrow">Secret Santa ISD</p>
-        <h1 class="title" style="font-size:clamp(2.4rem,9vw,4rem)"><span class="shine">Ops! 🎁</span></h1>
-        <p class="subtitle">Questo link non è valido o è incompleto. Chiedi all'organizzatore di inviartelo di nuovo.</p>
-      </section>`;
+  function viewLogin() {
+    if (configStatus === 'loading') return '<div class="card login"><p class="hint">Caricamento…</p></div>';
+    if (!config.passwordHash) {
+      return `<div class="card login">
+        <div class="emoji" aria-hidden="true">🛠️</div>
+        <h3 style="justify-content:center">Imposta la password</h3>
+        <p class="hint">${configStatus === 'error' ? 'Impossibile leggere config.json. ' : ''}Nessuna password impostata. Scegline una: ti preparo il valore da incollare in <strong>config.json</strong> alla voce <strong>passwordHash</strong>.</p>
+        <form data-form="setup" autocomplete="off">
+          <input class="input" type="password" name="pw" placeholder="Nuova password" aria-label="Nuova password" minlength="6" required autocomplete="new-password">
+          <button class="btn primary" type="submit">Genera impronta</button>
+        </form>
+        ${org.setupHash ? `<code class="hash">"passwordHash": "${esc(org.setupHash)}"</code>
+          <div class="row" style="justify-content:center;margin-top:12px"><button class="btn small" data-action="copy-hash">📋 Copia</button></div>
+          <p class="hint" style="margin-top:12px">Fai commit di config.json, attendi la pubblicazione e ricarica questa pagina.</p>` : ''}
+      </div>`;
     }
-    const st = lockStatus(config);
-    renderedStatus = st;
-    const locked = st !== 'unlocked';
-    const sub = st === 'unlocked'
-      ? 'Il tuo pacco è <strong>sbloccato</strong>! Toccalo per scoprire a chi farai il regalo 👆'
-      : st === 'waiting-time'
-        ? `Il tuo pacco è chiuso a chiave 🔒 Si aprirà <strong>${esc(fmtDate(config.sblocco))}</strong>`
-        : config.sblocco
-          ? 'Ci siamo quasi! ⏳ Babbo Natale sta per sbloccare i pacchi… la pagina si aggiorna da sola.'
-          : 'Il tuo pacco è chiuso a chiave 🔒 Verrà sbloccato dall\'organizzatore: la pagina si aggiorna da sola.';
-    return `<section class="hero">
-      <p class="eyebrow">✨ Secret Santa ISD ✨</p>
-      <h1 class="title" style="font-size:clamp(2.6rem,11vw,5.6rem)">Ciao <span class="shine">${esc(personal.g)}</span>!</h1>
-      <p class="subtitle">${sub}</p>
-      <div class="hero-gift"><button class="gift bob ${locked ? 'locked' : ''}" style="--g:min(230px,58vw)" data-action="open-personal" aria-label="${locked ? 'Pacco ancora chiuso' : 'Apri il tuo regalo'}">${giftInner(locked)}</button></div>
-      ${st === 'waiting-time' ? countdownHtml(config.sblocco, '') : ''}
-      ${st === 'unlocked' ? '<p class="status-line">🔓 Sbloccato!</p>' : ''}
-      <p class="note-card">📅 Pranzo: <strong>${esc(fmtDate(config.dataEvento))}</strong>${config.budget ? ` · 💶 Budget: <strong>${esc(config.budget)}</strong>` : ''}</p>
-    </section>`;
+    return `<div class="card login ${org.loginError ? 'err' : ''}">
+      <div class="emoji" aria-hidden="true">🔐</div>
+      <h3 style="justify-content:center">Area organizzatore</h3>
+      <p class="hint">Inserisci la password per gestire l'estrazione.</p>
+      <form data-form="login" autocomplete="off">
+        <input id="pwInput" class="input" type="password" name="pw" placeholder="Password" aria-label="Password" required autocomplete="current-password">
+        <button class="btn primary" type="submit">Entra</button>
+      </form>
+    </div>`;
   }
 
-  function viewAdmin() {
-    const { csv, draw } = admin;
+  function viewParticipants() {
+    const { csv } = org;
     const n = csv.people.length;
     const groupsColor = new Map();
     csv.people.forEach((p) => { if (p.group && !groupsColor.has(nameKey(p.group))) groupsColor.set(nameKey(p.group), COLORS[groupsColor.size % COLORS.length]); });
@@ -1127,79 +1101,56 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
       }).join('')}</div>`
       : '<div class="empty">Nessun partecipante caricato.</div>';
     const errs = csv.errors.length ? `<ul class="errs">${csv.errors.map((e) => `<li>${esc(e)}</li>`).join('')}</ul>` : '';
-    const rosterChanged = draw && draw.roster && csv.status === 'ok' && rosterSig(csv.people.map((p) => p.name)) !== draw.roster;
-    const st = lockStatus(config);
-    const keyPublished = !!config.chiave;
-    const keyMatches = draw && config.chiave === draw.key;
-    const local = location.protocol === 'file:';
+    return `<h2 class="section">Pronti per l'estrazione?</h2>
+      <p class="lead">I partecipanti arrivano da <strong>partecipanti.csv</strong>. Stesso <em>gruppo</em> = non si estraggono a vicenda.</p>
+      <div class="card">
+        <h3>👥 Partecipanti <span class="count-pill">${n}</span></h3>
+        <div class="row" style="margin-top:10px"><button class="btn small" data-action="reload-csv">🔄 Ricarica il CSV</button></div>
+        ${chips}
+        ${errs}
+      </div>
+      <div class="actions-foot" style="flex-direction:column;align-items:center">
+        <button class="btn red big" data-action="draw" ${n >= MIN_PEOPLE && !org.busy ? '' : 'disabled'}>🎲 Estrai i nomi!</button>
+        ${n >= MIN_PEOPLE ? '' : `<span class="hint">Servono almeno ${MIN_PEOPLE} partecipanti</span>`}
+        <button class="btn small" data-action="logout">🚪 Esci</button>
+      </div>`;
+  }
 
-    const cfgPills = `<div class="pills">
-      <span class="pill ${configLoaded ? 'ok' : 'warn'}">${configLoaded ? '✓ config.json letto' : '⚠ config.json non raggiungibile'}</span>
-      <span class="pill ${st === 'unlocked' ? 'ok' : 'warn'}">${st === 'unlocked' ? '🔓 Pacchi sbloccati' : '🔒 Pacchi bloccati'}</span>
-      ${keyPublished ? `<span class="pill ${!draw || keyMatches ? 'ok' : 'bad'}">${!draw ? '🔑 Chiave pubblicata' : keyMatches ? '🔑 Chiave pubblicata ✓' : '⚠ Chiave pubblicata diversa da questa estrazione'}</span>` : '<span class="pill">🔑 Chiave non pubblicata</span>'}
-    </div>
-    <p class="hint">Pranzo: <strong>${esc(fmtDate(config.dataEvento))}</strong> · Sblocco: <strong>${config.sblocco ? esc(fmtDate(config.sblocco)) : 'appena pubblichi la chiave'}</strong>${config.budget ? ` · Budget: <strong>${esc(config.budget)}</strong>` : ''}</p>`;
-
-    return `<h2 class="section">Area organizzatore 🎅</h2>
-      <p class="lead">Da qui carichi i partecipanti, fai l'estrazione e ottieni i link da inviare. Questa pagina non è collegata da nessuna parte del sito.</p>
-      ${local ? '<div class="banner"><span aria-hidden="true">⚠️</span><span>Stai usando un file locale: i link punterebbero al tuo computer. Fai l\'estrazione dalla versione pubblicata su GitHub Pages.</span></div>' : ''}
-      ${rosterChanged ? '<div class="banner"><span aria-hidden="true">⚠️</span><span>Il CSV è cambiato dopo l\'estrazione: rifai l\'estrazione e rimanda i link.</span></div>' : ''}
-      <div class="grid-2">
-        <div class="stack">
-          <div class="card">
-            <h3>👥 Partecipanti <span class="count-pill">${n}</span></h3>
-            <p class="hint">${csv.source ? `Da <strong>${esc(csv.source)}</strong>. ` : ''}Stesso <em>gruppo</em> = non si estraggono a vicenda.</p>
-            <div class="row">
-              <button class="btn small" data-action="reload-csv">🔄 Ricarica dal repository</button>
-              <label class="btn small" for="csvFile">📂 Carica un CSV</label>
-              <input id="csvFile" class="file-input" type="file" accept=".csv,text/csv,text/plain">
-            </div>
-            ${chips}
-            ${errs}
-          </div>
-          ${draw ? `<div class="card">
-            <h3>🔗 Link personali <span class="count-pill">${draw.links.length}</span></h3>
-            <p class="hint">Estrazione del ${esc(new Date(draw.drawnAt).toLocaleString('it-IT', { timeZone: 'Europe/Rome' }))}. Il destinatario è cifrato: nemmeno tu puoi vederlo.</p>
-            <div class="links">
-              ${draw.links.map((l, i) => `<div class="link-row" style="--i:${i}">
-                <div class="who"><i class="dot" style="background:${COLORS[i % 6]}"></i><span>${esc(l.g)}</span></div>
-                <div class="acts">
-                  <button class="btn small" data-action="copy" data-i="${i}" aria-label="Copia link di ${esc(l.g)}">📋 <span class="lbl">Copia</span></button>
-                  <button class="btn small primary" data-action="share" data-i="${i}" aria-label="Invia link a ${esc(l.g)}">📨 <span class="lbl">Invia</span></button>
-                </div>
-              </div>`).join('')}
-            </div>
-            <div class="actions-foot"><button class="btn small" data-action="backup">⬇️ Scarica backup (.txt)</button></div>
-          </div>` : ''}
-        </div>
-        <div class="stack">
-          <div class="card">
-            <h3>🔐 Sblocco (config.json)</h3>
-            ${cfgPills}
-            ${draw ? `<p class="hint" style="margin-bottom:4px">Chiave di questa estrazione — <strong>tienila segreta fino allo sblocco</strong>:</p>
-              <div class="key">${esc(draw.key)}</div>
-              <p class="hint" style="margin:12px 0 0">Per sbloccare, sostituisci il contenuto di <code>config.json</code> nel repository con:</p>
-              <pre class="code">${esc(unlockConfigText())}</pre>
-              <div class="row"><button class="btn small" data-action="copy-key">📋 Copia chiave</button><button class="btn small" data-action="copy-config">📋 Copia config.json</button></div>`
-              : '<p class="hint">Dopo l\'estrazione qui troverai la chiave da pubblicare per sbloccare i pacchi.</p>'}
-            <div class="row" style="margin-top:12px"><button class="btn small" data-action="reload-config">🔄 Ricontrolla config.json</button></div>
-          </div>
-          <div class="card admin-draw">
-            <button class="btn red big" data-action="draw" ${n >= MIN_PEOPLE && !admin.busy ? '' : 'disabled'}>🎲 ${draw ? 'Rifai l\'estrazione' : 'Estrai i nomi!'}</button>
-            ${n >= MIN_PEOPLE ? '' : `<span class="note">Servono almeno ${MIN_PEOPLE} partecipanti</span>`}
-            ${draw ? '<button class="btn small danger" data-action="delete-draw">🗑️ Elimina estrazione</button>' : ''}
-          </div>
-        </div>
+  function viewReveal() {
+    const d = org.draw;
+    const names = Object.keys(d.assignments);
+    const seen = names.filter((n) => d.revealed[n]).length;
+    const pct = Math.round((seen / names.length) * 100);
+    const rosterChanged = org.csv.status === 'ok' && d.roster && rosterSig(org.csv.people.map((p) => p.name)) !== d.roster;
+    return `<h2 class="section">Chi sta scoprendo?</h2>
+      <p class="lead">Tocca il tuo nome per aprire il pacco. Gli altri… girino lo sguardo! 👀</p>
+      ${rosterChanged ? '<div class="banner"><span aria-hidden="true">⚠️</span><span>Il CSV dei partecipanti è cambiato dopo l\'estrazione: valuta di rifarla.</span></div>' : ''}
+      <div class="progress"><div class="bar"><i style="width:${pct}%"></i></div><b>${seen}/${names.length}</b></div>
+      <div class="orn-grid">
+        ${names.map((n, i) => {
+          const s = !!d.revealed[n];
+          return `<button class="orn c${(i % 6) + 1} ${s ? 'seen' : ''}" style="--i:${i}" data-action="reveal" data-i="${i}" aria-label="${esc(n)}${s ? ', già scoperto' : ''}">
+            <span class="bauble" aria-hidden="true"></span>
+            <span class="orn-name">${esc(n)}</span>
+            <span class="orn-state">${s ? '✓ Già scoperto' : 'Tocca per scoprire'}</span>
+          </button>`;
+        }).join('')}
+      </div>
+      <div class="actions-foot">
+        <button class="btn small" data-action="reset-seen">🔄 Azzera "già scoperto"</button>
+        <button class="btn small danger" data-action="draw">🔁 Rifai estrazione</button>
+        <button class="btn small" data-action="logout">🚪 Esci</button>
       </div>`;
   }
 
   function render() {
     const app = $('#app');
     document.body.dataset.view = view;
-    app.innerHTML = view === 'admin' ? viewAdmin() : view === 'personal' ? viewPersonal() : viewHome();
+    app.innerHTML = view !== 'admin' ? viewHome() : !org.authed ? viewLogin() : org.draw ? viewReveal() : viewParticipants();
     $('.brand').disabled = view !== 'admin';
     renderSoundBtn();
     updateCountdown();
+    if (view === 'admin' && !org.authed) $('#pwInput')?.focus({ preventScroll: true });
   }
 
   function renderSoundBtn() {
@@ -1223,52 +1174,55 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
     set('s', String(s % 60).padStart(2, '0'));
   }
 
-  /** Ridisegna la pagina personale se lo stato di blocco è cambiato (orario raggiunto o chiave pubblicata). */
-  function syncPersonalStatus() {
-    if (view !== 'personal' || !personal || overlayRoot.childElementCount) return;
-    const st = lockStatus(config);
-    if (st === renderedStatus) return;
-    const wasLocked = renderedStatus !== 'unlocked';
-    render();
-    if (st === 'unlocked' && wasLocked) { chime(); fx.rain(200); toast('🔓 Il tuo pacco è sbloccato!'); }
-  }
-
   // ============ Events ============
   const app = $('#app');
   document.addEventListener('click', (e) => {
     const b = e.target.closest('[data-action]');
     if (!b || b.disabled || b.closest('.overlay')) return;
-    const l = admin.draw?.links[Number(b.dataset.i)];
     switch (b.dataset.action) {
       case 'home': location.hash = ''; break;
       case 'sound': prefs.sound = !prefs.sound; store.save(PREFS_KEY, prefs); renderSoundBtn(); if (prefs.sound) chime(); break;
-      case 'open-personal': openPersonalGift(b); break;
-      case 'reload-csv': loadCSVFromRepo(); break;
-      case 'reload-config': loadConfig().then(() => { render(); toast(configLoaded ? 'config.json aggiornato' : 'config.json non raggiungibile', !configLoaded); }); break;
+      case 'reload-csv': loadCSV(); break;
       case 'draw': doDraw(); break;
-      case 'delete-draw': deleteDraw(); break;
-      case 'copy': if (l) copyText(linkFor(l)).then((ok) => toast(ok ? `Link di ${l.g} copiato 📋` : 'Copia non riuscita', !ok)); break;
-      case 'share': if (l) shareLink(l); break;
-      case 'backup': if (admin.draw) downloadBackup(); break;
-      case 'copy-key': if (admin.draw) copyText(admin.draw.key).then((ok) => toast(ok ? 'Chiave copiata 🔑' : 'Copia non riuscita', !ok)); break;
-      case 'copy-config': if (admin.draw) copyText(unlockConfigText()).then((ok) => toast(ok ? 'config.json copiato 📋' : 'Copia non riuscita', !ok)); break;
+      case 'reveal': if (org.draw) revealFor(Object.keys(org.draw.assignments)[Number(b.dataset.i)]); break;
+      case 'reset-seen': resetSeen(); break;
+      case 'logout': logout(); break;
+      case 'copy-hash': copyText(`"passwordHash": "${org.setupHash}"`).then((ok) => toast(ok ? 'Copiato 📋' : 'Copia non riuscita', !ok)); break;
     }
   });
 
-  app.addEventListener('change', (e) => {
-    if (e.target.id !== 'csvFile') return;
-    const file = e.target.files?.[0];
-    if (!file) return;
-    file.text().then((t) => { applyCSV(t, file.name); render(); toast(`${admin.csv.people.length} partecipanti caricati`); })
-      .catch(() => toast('File non leggibile', true));
+  app.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target;
+    const input = f.elements.namedItem('pw');
+    const pw = input?.value || '';
+    const btn = f.querySelector('button[type=submit]');
+    if (btn) btn.disabled = true;
+    try {
+      if (f.dataset.form === 'login') await login(pw);
+      else if (f.dataset.form === 'setup' && pw.length >= 6) { org.setupHash = await hashPassword(pw); render(); }
+    } catch {
+      toast('Il browser non supporta la crittografia necessaria (serve HTTPS).', true);
+    } finally { if (btn && document.contains(btn)) btn.disabled = false; }
   });
+
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); return true; } catch {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;opacity:0';
+        document.body.appendChild(ta); ta.select();
+        const ok = document.execCommand('copy'); ta.remove(); return ok;
+      } catch { return false; }
+    }
+  }
 
   addEventListener('hashchange', () => {
     closeOverlayNow();
-    const prev = view;
     readHash();
+    org.loginError = false;
     render();
-    if (view === 'admin' && prev !== 'admin' && admin.csv.status === 'idle') loadCSVFromRepo();
+    if (view === 'admin' && org.authed && org.csv.status === 'idle') loadCSV();
     scrollTo({ top: 0 });
   });
 
@@ -1276,19 +1230,15 @@ pre.code { margin: 10px 0 12px; padding: 14px; border-radius: 12px; background: 
   readHash();
   initSky();
   render();
-  loadConfig().then(() => { render(); if (view === 'admin') loadCSVFromRepo(); });
-  setInterval(() => { updateCountdown(); syncPersonalStatus(); }, 1000);
-  // Ricontrolla config.json finché i pacchi sono bloccati, così lo sblocco arriva senza ricaricare.
-  setInterval(() => {
-    if (document.hidden || view !== 'personal' || !personal || lockStatus(config) === 'unlocked') return;
-    loadConfig().then(syncPersonalStatus);
-  }, POLL_MS);
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && view === 'personal' && lockStatus(config) !== 'unlocked') loadConfig().then(syncPersonalStatus);
+  loadConfig().then(() => {
+    checkSession();
+    render();
+    if (view === 'admin' && org.authed) loadCSV();
   });
+  setInterval(updateCountdown, 1000);
 
   // Esposto solo per i test automatici
-  window.__ss = { computeDraw, blockedGivers, isValidAssignment, participantsFromCSV, exclusionsFromGroups, sanitizeConfig, lockStatus, seal, unseal, newKey, encodeToken, decodeToken };
+  window.__ss = { computeDraw, blockedGivers, isValidAssignment, participantsFromCSV, exclusionsFromGroups, sanitizeConfig, hashPassword };
 })();
 </script>
 </body>
